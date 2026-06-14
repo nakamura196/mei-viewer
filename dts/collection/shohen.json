@@ -1,0 +1,76 @@
+{
+  "@context": "https://distributed-text-services.github.io/specifications/context/1-alpha1.json",
+  "dtsVersion": "1-alpha",
+  "dts:version": "1-alpha",
+  "@id": "urn:shoka:shohen",
+  "@type": "Collection",
+  "title": "小学唱歌集 初編",
+  "totalParents": 1,
+  "totalChildren": 1,
+  "collection": "https://nakamura196.github.io/mei-viewer/dts/collection/shohen.json",
+  "member": [
+    {
+      "@id": "urn:shoka:shohen:choucho",
+      "@type": "Resource",
+      "title": "蝶々（第十七）",
+      "totalParents": 1,
+      "totalChildren": 0,
+      "dublinCore": {
+        "title": [
+          {
+            "lang": "ja",
+            "value": "蝶々（第十七）"
+          },
+          {
+            "lang": "en",
+            "value": "Chōchō (No. 17)"
+          }
+        ],
+        "creator": [
+          "文部省音楽取調掛 編"
+        ],
+        "source": [
+          "https://dl.ndl.go.jp/info:ndljp/pid/992051"
+        ],
+        "identifier": [
+          "info:ndljp/pid/992051"
+        ],
+        "language": [
+          "ja"
+        ],
+        "rights": [
+          "https://creativecommons.org/publicdomain/mark/1.0/"
+        ],
+        "license": [
+          "https://creativecommons.org/publicdomain/zero/1.0/"
+        ]
+      },
+      "collection": "https://nakamura196.github.io/mei-viewer/dts/collection/shohen.json",
+      "navigation": "https://nakamura196.github.io/mei-viewer/dts/navigation/choucho.json",
+      "document": "https://nakamura196.github.io/mei-viewer/dts/document/choucho.tei.xml",
+      "mediaTypes": [
+        "application/tei+xml",
+        "application/mei+xml"
+      ],
+      "download": {
+        "application/tei+xml": "https://nakamura196.github.io/mei-viewer/dts/document/choucho.tei.xml",
+        "application/mei+xml": "https://nakamura196.github.io/mei-viewer/dts/document/choucho.mei"
+      },
+      "citationTrees": [
+        {
+          "@type": "CitationTree",
+          "citeStructure": [
+            {
+              "citeType": "stanza",
+              "citeStructure": [
+                {
+                  "citeType": "line"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

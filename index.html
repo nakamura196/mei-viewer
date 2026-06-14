@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>音楽符号化デモ ― MEIで楽譜を構造化する</title>
+<meta name="description" content="楽譜を構造化データ（MEI）にし、IIIF原資料・歌詞と結ぶ実験的カタログ。明治期『小学唱歌集』の「蝶々」を題材にしています。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap">
+<link rel="stylesheet" href="assets/react-ui.css">
+<style>
+  body { font-family:var(--ds-font-sans); background:var(--ds-bg); color:var(--ds-fg); }
+  .hero { background:linear-gradient(180deg, var(--ds-blue-50), var(--ds-bg)); border-bottom:1px solid var(--ds-border); }
+  .hero .ds-container { padding-top:40px; padding-bottom:40px; }
+  .lead-sub { color:var(--ds-fg-muted); max-width:62ch; line-height:1.9; }
+  .cat-grid { display:grid; gap:18px; grid-template-columns:1fr; margin-top:18px; }
+  @media (min-width:760px){ .cat-grid { grid-template-columns:repeat(2,1fr); } }
+  .item { display:flex; flex-direction:column; overflow:hidden; padding:0; }
+  .item img { width:100%; height:150px; object-fit:cover; background:#fff; border-bottom:1px solid var(--ds-border); }
+  .item .body { padding:14px 16px 16px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .item h3 { margin:0; font-family:var(--ds-font-serif); font-size:18px; color:var(--ds-blue-900); }
+  .meta { font-size:12px; color:var(--ds-fg-muted); line-height:1.7; }
+  .tags { display:flex; gap:6px; flex-wrap:wrap; }
+  .tag { font-size:11px; background:var(--ds-surface-2); color:var(--ds-fg-muted); padding:2px 8px; border-radius:999px; }
+  .item .spacer { flex:1; }
+  .soon { border-style:dashed; display:flex; align-items:center; justify-content:center; color:var(--ds-fg-muted);
+          min-height:150px; font-size:14px; text-align:center; }
+  .feat { display:grid; gap:14px; grid-template-columns:1fr; margin-top:8px; }
+  @media (min-width:760px){ .feat { grid-template-columns:repeat(3,1fr); } }
+  .feat .ds-card h3 { margin:0 0 6px; font-size:15px; font-family:var(--ds-font-sans); color:var(--ds-fg); }
+  .feat .ds-card p { margin:0; font-size:13px; color:var(--ds-fg-muted); line-height:1.8; }
+  a { color:var(--ds-blue); }
+</style>
+</head>
+<body>
+<header class="ds-header">
+  <div class="ds-header__inner">
+    <a class="ds-header__brand" href="index.html">音楽符号化デモ</a>
+    <nav class="ds-header__nav">
+      <a class="ds-header__nav-link" href="viewer.html">ビューア</a>
+      <a class="ds-header__nav-link" href="https://music-encoding.org" target="_blank" rel="noopener">MEIとは</a>
+      <a class="ds-header__nav-link" href="https://github.com/nakamura196" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="ds-container">
+    <h1 class="ds-h1">楽譜を「構造化データ」にする</h1>
+    <p class="ds-lead">MEI（Music Encoding Initiative）で楽譜を符号化し、IIIF の原資料画像・歌詞と相互にリンクする実験的カタログです。</p>
+    <p class="lead-sub">スキャン画像のままでは、計算機は楽譜の音高も歌詞も読めません。音高・音価・歌詞を機械可読なデータとして記述すると、検索・分析・再生、そして原資料との一音単位のリンクが可能になります。本サイトは、明治期『小学唱歌集 初編』の「蝶々」を最初の題材に、その仕組みを体験できるようにしたものです。</p>
+  </div>
+</section>
+
+<main class="ds-container ds-section">
+  <h2 class="ds-h2">カタログ</h2>
+  <p class="meta" id="cat-count">読み込み中…</p>
+  <div class="cat-grid" id="cat-grid"></div>
+
+  <h2 class="ds-h2" style="margin-top:34px">このデモでできること</h2>
+  <div class="feat">
+    <div class="ds-card"><h3>① 音符⇄原資料</h3><p>楽譜の音符をクリックすると、IIIF の原資料画像の該当段が同期してハイライトされます。</p></div>
+    <div class="ds-card"><h3>② 縦書き歌詞リンク</h3><p>左丁の縦書き本文を NDL古典籍OCR-Lite で翻刻し、行の座標で楽譜・画像と結びます。</p></div>
+    <div class="ds-card"><h3>③ 再生</h3><p>MEI から MIDI を生成し、ブラウザ上で旋律を再生。鳴っている音符が同期して光ります。</p></div>
+  </div>
+</main>
+
+<footer class="ds-footer">
+  <div class="ds-footer__inner">
+    <div class="ds-footer__grid">
+      <div>
+        <p class="ds-footer__brand">音楽符号化デモ</p>
+        <p class="ds-footer__brand-desc">楽譜を構造化データ（MEI）にし、IIIF原資料・歌詞と結ぶ実験的カタログ。デザインは UTokyo VI（@nakamura196/react-ui）。</p>
+      </div>
+      <div class="ds-footer__col">
+        <h2 class="ds-footer__heading">関連リンク</h2>
+        <ul class="ds-footer__list">
+          <li><a class="ds-footer__link" href="viewer.html">蝶々ビューア</a></li>
+          <li><a class="ds-footer__link" href="https://music-encoding.org" target="_blank" rel="noopener">Music Encoding Initiative</a></li>
+          <li><a class="ds-footer__link" href="https://iiif.io" target="_blank" rel="noopener">IIIF</a></li>
+          <li><a class="ds-footer__link" href="https://dl.ndl.go.jp/info:ndljp/pid/992051" target="_blank" rel="noopener">底本: NDL pid 992051</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ds-footer__copyright">底本: 文部省音楽取調掛 編『小学唱歌集 初編』(1881-1884) パブリックドメイン／エンコード: CC0</div>
+  </div>
+</footer>
+
+<script>
+// Catalog is data-driven: add a work by dropping data/<id>/ and one entry in catalog.json.
+fetch("catalog.json").then(r => r.json()).then(cat => {
+  const grid = document.getElementById("cat-grid");
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  cat.items.forEach(it => {
+    const a = document.createElement("a");
+    a.className = "ds-card item";
+    a.href = "viewer.html?id=" + encodeURIComponent(it.id);
+    a.style.cssText = "text-decoration:none;color:inherit";
+    a.innerHTML = `
+      <img src="${esc(it.thumb)}" alt="${esc(it.title)}の楽譜（部分）" loading="lazy">
+      <div class="body">
+        <h3>${esc(it.title)}</h3>
+        <div class="tags">${(it.tags||[]).map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>
+        <p class="meta">${esc(it.summary || "")}</p>
+        <div class="spacer"></div>
+        <span class="ds-btn ds-btn--sm" style="align-self:flex-start">ビューアを開く →</span>
+      </div>`;
+    grid.appendChild(a);
+  });
+  // "coming soon" placeholder keeps the grid balanced while the catalog grows
+  const soon = document.createElement("div");
+  soon.className = "ds-card item soon";
+  soon.innerHTML = "準備中<br>（『小学唱歌集』の他曲を追加予定）";
+  grid.appendChild(soon);
+  document.getElementById("cat-count").textContent = `現在 ${cat.items.length} 件。順次追加予定です。`;
+});
+</script>
+</body>
+</html>

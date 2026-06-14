@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>蝶々 ― MEI×IIIF ビューア｜音楽符号化デモ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap">
+<link rel="stylesheet" href="assets/react-ui.css">
+<!-- Verovio: MEI -> SVG (RISM Digital) / OpenSeadragon: IIIF viewer / html-midi-player: MIDI playback -->
+<script src="https://www.verovio.org/javascript/latest/verovio-toolkit-wasm.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/openseadragon@4.1.0/build/openseadragon/openseadragon.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.77,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.5.0" defer></script>
+<style>
+  body { font-family: var(--ds-font-sans); background: var(--ds-bg); color: var(--ds-fg); }
+  .grid { display:grid; gap:16px; grid-template-columns: 1fr; }
+  @media (min-width: 1000px){ .grid { grid-template-columns: 1.05fr 1.15fr 0.55fr; } }
+  .panel { background:var(--ds-surface); border:1px solid var(--ds-border); border-radius:var(--ds-radius); padding:12px; }
+  .panel h2 { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ds-fg-muted);
+              margin:0 0 8px; font-weight:700; font-family:var(--ds-font-sans); }
+  #notation { background:#fff; border-radius:8px; padding:6px; overflow:auto; }
+  #notation svg { width:100%; height:auto; }
+  #notation g.note { cursor:pointer; }
+  #notation g.note.sel * { fill:var(--ds-blue)!important; stroke:var(--ds-blue)!important; }
+  #notation g.note.playing * { fill:#1f8a4c!important; stroke:#1f8a4c!important; }
+  .controls { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:10px 0 4px; }
+  midi-player { width:100%; margin-top:6px; --md-sys-color-primary:var(--ds-blue); }
+  #osd { width:100%; height:460px; background:#000; border-radius:8px; }
+  .data table { width:100%; border-collapse:collapse; font-size:13px; }
+  .data td { padding:4px 6px; border-bottom:1px solid var(--ds-border); }
+  .data td.k { color:var(--ds-fg-muted); width:38%; }
+  /* vertical lyric panel (honkoku) */
+  .honkoku { display:flex; flex-direction:row-reverse; gap:10px; justify-content:flex-start;
+             overflow-x:auto; padding:6px 2px; }
+  .verse { display:flex; flex-direction:row-reverse; gap:6px; }
+  .vline { writing-mode: vertical-rl; text-orientation: upright; font-family:var(--ds-font-serif);
+           font-size:17px; line-height:1.9; letter-spacing:.04em; padding:6px 4px; border-radius:6px;
+           cursor:pointer; white-space:nowrap; border:1px solid transparent; }
+  .vline:hover { background:var(--ds-surface-2); }
+  .vline.sel { background:var(--ds-blue-50); border-color:var(--ds-blue); color:var(--ds-blue-900); }
+  .vlabel { writing-mode:vertical-rl; color:var(--ds-fg-muted); font-size:12px; font-family:var(--ds-font-serif); padding-top:6px; }
+  .hint { font-size:12px; color:var(--ds-fg-muted); line-height:1.6; }
+  .conf { font-size:11px; color:var(--ds-fg-muted); }
+  a { color:var(--ds-blue); }
+  .ai-note { font-size:12px; color:var(--ds-fg-muted); border-left:3px solid var(--ds-blue);
+             padding:6px 10px; margin:0 0 14px; background:var(--ds-surface); }
+</style>
+</head>
+<body>
+<header class="ds-header">
+  <div class="ds-header__inner">
+    <a class="ds-header__brand" href="index.html">音楽符号化デモ</a>
+    <nav class="ds-header__nav">
+      <a class="ds-header__nav-link" href="index.html">ホーム</a>
+      <a class="ds-header__nav-link" href="https://music-encoding.org" target="_blank" rel="noopener">MEIとは</a>
+    </nav>
+  </div>
+</header>
+
+<main class="ds-container ds-section">
+  <h1 class="ds-h1">「蝶々」 ― MEI × IIIF ビューア</h1>
+  <p class="ds-lead">『小学唱歌集 初編』第十七「蝶々」（国立国会図書館蔵）を題材に、構造化楽譜（MEI）と原資料画像（IIIF）、縦書き歌詞を相互にリンクします。</p>
+  <p class="ai-note">楽譜の音符をクリックすると、原資料画像の該当段と縦書き歌詞の対応行が同時にハイライトされます。「▶ 再生」で旋律を音にできます。本デモは生成AIと共同制作しており、第1フレーズの音高は底本で検証していますが、誤りが含まれる可能性があります。</p>
+
+  <div class="grid">
+    <!-- column 1: notation + playback + data -->
+    <div>
+      <div class="panel">
+        <h2>MEI → 楽譜（Verovio 描画）</h2>
+        <div id="notation">読み込み中…</div>
+        <div class="controls">
+          <button class="ds-btn ds-btn--sm" id="play">▶ 再生</button>
+          <button class="ds-btn ds-btn--secondary ds-btn--sm" id="stop">■ 停止</button>
+        </div>
+        <midi-player id="player" sound-font></midi-player>
+      </div>
+      <div class="panel data" style="margin-top:16px">
+        <h2>構造化データ（クリックした音符）</h2>
+        <div id="data"><p class="hint">音符をクリックすると、MEI が保持する音高・音価・歌詞・小節・原資料座標が表示されます。<br>「画像」ではなく「データ」だからこそ、検索・分析・再生・原資料へのリンクができます。</p></div>
+      </div>
+    </div>
+
+    <!-- column 2: IIIF facsimile -->
+    <div class="panel">
+      <h2>原資料（IIIF・OpenSeadragon）</h2>
+      <div id="osd"></div>
+      <p class="hint" style="margin-top:8px">青枠＝選択中の楽譜の段（右丁）／橙枠＝対応する縦書き歌詞の行（左丁）。第2〜4段の音高は未符号化で、原資料リンクのみ。</p>
+    </div>
+
+    <!-- column 3: vertical lyric text (OCR honkoku) -->
+    <div class="panel">
+      <h2>歌詞・翻刻（NDL古典籍OCR-Lite）</h2>
+      <div class="honkoku" id="honkoku"></div>
+      <p class="hint" style="margin-top:8px">縦書き本文を NDL古典籍OCR-Lite で自動翻刻し、行の座標で原資料にリンク。行をクリックすると原資料の該当箇所へ移動します。<span class="conf">数値=OCR信頼度</span>。</p>
+    </div>
+  </div>
+</main>
+
+<footer class="ds-footer">
+  <div class="ds-footer__inner">
+    <div class="ds-footer__grid">
+      <div>
+        <p class="ds-footer__brand">音楽符号化デモ</p>
+        <p class="ds-footer__brand-desc">楽譜を構造化データ（MEI）にし、IIIF原資料・歌詞と結ぶ実験的ビューア。</p>
+      </div>
+      <div class="ds-footer__col">
+        <h2 class="ds-footer__heading">関連リンク</h2>
+        <ul class="ds-footer__list">
+          <li><a class="ds-footer__link" href="https://music-encoding.org" target="_blank" rel="noopener">Music Encoding Initiative</a></li>
+          <li><a class="ds-footer__link" href="https://iiif.io" target="_blank" rel="noopener">IIIF</a></li>
+          <li><a class="ds-footer__link" href="https://dl.ndl.go.jp/info:ndljp/pid/992051" target="_blank" rel="noopener">底本: NDL pid 992051（PDM）</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ds-footer__copyright">底本: 文部省音楽取調掛 編『小学唱歌集 初編』(1881-1884) パブリックドメイン／エンコード: CC0</div>
+  </div>
+</footer>
+
+<script>
+let tk, viewer, meiXML, lyrics, META, zones = {}, zoneByMeasure = {}, ovMusic, ovLyric;
+// data-driven: ?id=<slug> selects which work to load from data/<slug>/
+const ID = new URLSearchParams(location.search).get("id") || "choucho";
+const BASE = "data/" + ID + "/";
+
+async function loadData() {
+  const meiText = await (await fetch(BASE + META.mei)).text();
+  meiXML = new DOMParser().parseFromString(meiText, "application/xml");
+  meiXML.querySelectorAll("zone").forEach(z => zones[z.getAttribute("xml:id")] = {
+    ulx:+z.getAttribute("ulx"), uly:+z.getAttribute("uly"),
+    lrx:+z.getAttribute("lrx"), lry:+z.getAttribute("lry")
+  });
+  meiXML.querySelectorAll("measure").forEach(m =>
+    zoneByMeasure[m.getAttribute("xml:id")] = (m.getAttribute("facs")||"").replace("#",""));
+  lyrics = await (await fetch(BASE + META.lyrics)).json();
+  // register lyric-line bboxes as zones too (id = line id)
+  lyrics.verses.forEach(v => v.lines.forEach(l => {
+    const [x,y,w,h] = l.bbox; zones[l.id] = {ulx:x, uly:y, lrx:x+w, lry:y+h};
+  }));
+  return meiText;
+}
+
+function renderNotation(meiText) {
+  tk.loadData(meiText);
+  document.getElementById("notation").innerHTML = tk.renderToSVG(1);
+  document.querySelectorAll("#notation g.note").forEach(g =>
+    g.addEventListener("click", () => selectNote(g.id)));
+  document.getElementById("player").src = "data:audio/midi;base64," + tk.renderToMIDI();
+}
+
+function buildHonkoku() {
+  const root = document.getElementById("honkoku");
+  lyrics.verses.forEach(v => {
+    const vg = document.createElement("div"); vg.className = "verse";
+    const lab = document.createElement("div"); lab.className = "vlabel";
+    lab.textContent = v.verse === 1 ? "一番" : "二番"; vg.appendChild(lab);
+    v.lines.forEach(l => {
+      const d = document.createElement("div"); d.className = "vline"; d.id = "ln-" + l.id;
+      d.textContent = l.read;
+      d.title = "OCR: " + l.ocr + "（信頼度 " + l.conf + "）";
+      d.addEventListener("click", () => selectLyric(l));
+      vg.appendChild(d);
+    });
+    root.appendChild(vg);
+  });
+}
+
+const SOLFA = {C:"ド",D:"レ",E:"ミ",F:"ファ",G:"ソ",A:"ラ",B:"シ"};
+function noteData(id){
+  const n = [...meiXML.getElementsByTagName("note")].find(e => e.getAttribute("xml:id")===id);
+  if(!n) return null;
+  const m = n.closest("measure"), syl = n.querySelector("syl");
+  return { pname:(n.getAttribute("pname")||"").toUpperCase(), oct:n.getAttribute("oct"),
+           dur:n.getAttribute("dur"), syl: syl?syl.textContent:"—",
+           measure: m?m.getAttribute("n"):"?", sys: m?zoneByMeasure[m.getAttribute("xml:id")]:null };
+}
+
+function selectNote(id){
+  document.querySelectorAll("#notation g.note.sel").forEach(e=>e.classList.remove("sel"));
+  const g = document.getElementById(id); if(g) g.classList.add("sel");
+  const d = noteData(id); if(!d) return;
+  document.getElementById("data").innerHTML = `<table>
+    <tr><td class="k">音名 pname</td><td>${d.pname}${d.oct}（${SOLFA[d.pname]||""}）</td></tr>
+    <tr><td class="k">音価 dur</td><td>1/${d.dur} 音符</td></tr>
+    <tr><td class="k">歌詞 syl</td><td>${d.syl}</td></tr>
+    <tr><td class="k">小節 measure</td><td>第 ${d.measure} 小節</td></tr>
+    <tr><td class="k">原資料 facs</td><td>${d.sys||"—"}（段）</td></tr>
+  </table>`;
+  // matching verse-1 lyric line for this system
+  const lyr = lyrics.verses[0].lines.find(l => l.sys === d.sys);
+  frameZone(d.sys, "music");
+  if (lyr) { drawOverlay(lyr.id, "lyric"); highlightLyricRow(lyr.id); }
+}
+
+function selectLyric(l){
+  highlightLyricRow(l.id);
+  frameZone(l.id, "lyric");
+  drawOverlay(l.sys, "music");
+  // also select the matching encoded note (first note of that system), if verse 1
+  const firstNote = meiXML.querySelector(`measure[facs="#${l.sys}"] note`);
+  if (firstNote){
+    const nid = firstNote.getAttribute("xml:id");
+    document.querySelectorAll("#notation g.note.sel").forEach(e=>e.classList.remove("sel"));
+    const g = document.getElementById(nid); if(g) g.classList.add("sel");
+  }
+}
+
+function highlightLyricRow(id){
+  document.querySelectorAll(".vline.sel").forEach(e=>e.classList.remove("sel"));
+  const el = document.getElementById("ln-"+id); if(el) el.classList.add("sel");
+}
+
+function rectOf(zid){
+  const z = zones[zid]; if(!z||!viewer) return null;
+  const img = viewer.world.getItemAt(0); if(!img) return null;
+  return img.imageToViewportRectangle(z.ulx, z.uly, z.lrx-z.ulx, z.lry-z.uly);
+}
+function drawOverlay(zid, kind){
+  const rect = rectOf(zid); if(!rect) return;
+  const color = kind==="music" ? "var(--ds-blue)" : "#e8830c";
+  let ref = kind==="music" ? ovMusic : ovLyric;
+  if(!ref){
+    ref = document.createElement("div");
+    ref.style.cssText = `border:3px solid ${color};border-radius:4px;pointer-events:none;`;
+    viewer.addOverlay({element:ref, location:rect});
+    if(kind==="music") ovMusic=ref; else ovLyric=ref;
+  } else viewer.updateOverlay(ref, rect);
+}
+function frameZone(zid, kind){
+  drawOverlay(zid, kind);
+  const rect = rectOf(zid); if(rect) viewer.viewport.fitBoundsWithConstraints(rect.times(1.18));
+}
+
+// playback highlight
+let raf;
+function tick(){
+  const t = document.getElementById("player").currentTime*1000;
+  const res = tk.getElementsAtTime(t);
+  document.querySelectorAll("#notation g.note.playing").forEach(e=>e.classList.remove("playing"));
+  (res.notes||[]).forEach(nid => { const g=document.getElementById(nid); if(g) g.classList.add("playing"); });
+  raf = requestAnimationFrame(tick);
+}
+
+window.addEventListener("load", async () => {
+  META = await (await fetch(BASE + "meta.json")).json();
+  // reflect the work's title in the page
+  document.title = META.title + " ― MEI×IIIF ビューア｜音楽符号化デモ";
+  viewer = OpenSeadragon({ id:"osd",
+    prefixUrl:"https://cdn.jsdelivr.net/npm/openseadragon@4.1.0/build/openseadragon/images/",
+    tileSources: META.iiif_info,
+    showNavigator:true, navigatorPosition:"BOTTOM_RIGHT" });
+
+  (function ready(){
+    let t; try { if (typeof verovio==="undefined") throw 0; t = new verovio.toolkit(); }
+    catch(e){ return setTimeout(ready, 120); }
+    (async () => {
+      tk = t;
+      tk.setOptions({ scale:40, adjustPageHeight:true, header:"none", footer:"none",
+                      pageMarginTop:6, pageMarginBottom:6, pageMarginLeft:6, pageMarginRight:6 });
+      const meiText = await loadData();
+      renderNotation(meiText);
+      buildHonkoku();
+      viewer.addHandler("open", () => frameZone("sys1","music"));
+    })();
+  })();
+
+  const player = document.getElementById("player");
+  document.getElementById("play").onclick = () => player.start();
+  document.getElementById("stop").onclick = () => player.stop();
+  player.addEventListener("start", () => { cancelAnimationFrame(raf); tick(); });
+  player.addEventListener("stop", () => { cancelAnimationFrame(raf);
+    document.querySelectorAll("#notation g.note.playing").forEach(e=>e.classList.remove("playing")); });
+});
+</script>
+</body>
+</html>

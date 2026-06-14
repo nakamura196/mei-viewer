@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://music-encoding.org/schema/5.1/mei-CMN.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<mei xmlns="http://www.music-encoding.org/ns/mei" meiversion="5.1">
+  <meiHead>
+    <fileDesc>
+      <titleStmt>
+        <title xml:lang="ja">蝶々（第十七）</title>
+        <title xml:lang="en" type="translated">Chōchō (No. 17)</title>
+        <respStmt>
+          <persName role="encoder">MEI demo encoding</persName>
+        </respStmt>
+      </titleStmt>
+      <pubStmt>
+        <availability>
+          <useRestrict>Encoding released under CC0. Source images are Public Domain (PDM).</useRestrict>
+        </availability>
+      </pubStmt>
+      <sourceDesc>
+        <source>
+          <bibl>
+            <title>小学唱歌集　初編</title>
+            <respStmt><persName role="editor">文部省音楽取調掛 編</persName></respStmt>
+            <pubPlace>東京</pubPlace>
+            <publisher>文部省</publisher>
+            <date>1881-1884</date>
+            <identifier type="NDLJP">info:ndljp/pid/992051</identifier>
+            <identifier type="DOI">10.11501/992051</identifier>
+            <ref target="https://dl.ndl.go.jp/info:ndljp/pid/992051">NDL Digital Collections</ref>
+          </bibl>
+        </source>
+      </sourceDesc>
+    </fileDesc>
+    <encodingDesc>
+      <editorialDecl>
+        <p xml:lang="ja">第1フレーズ（4小節）のみをエンコード。音高は第十七「蝶々」第1段の楽譜（NDL pid 992051, 第17コマ右丁）を底本とし、五線上の符頭位置から判読した（ソミミ／ファレレ／ドレミファ／ソソソ）。リズムは四分音符に正規化している。残り3段は facsimile に座標のみ記録し、符号化は今後の課題。</p>
+      </editorialDecl>
+    </encodingDesc>
+  </meiHead>
+  <music>
+    <!-- Facsimile: links the encoding back to the IIIF source image (NDL canvas 17).
+         Coordinates are pixel boxes on the full-resolution image (4489 x 2013). -->
+    <facsimile>
+      <surface xml:id="s17" ulx="0" uly="0" lrx="4489" lry="2013">
+        <graphic target="https://dl.ndl.go.jp/api/iiif/992051/R0000017/full/full/0/default.jpg"
+                 width="4489" height="2013"/>
+        <zone xml:id="sys1" ulx="2300" uly="380" lrx="4320" lry="800"/>
+        <zone xml:id="sys2" ulx="2300" uly="790" lrx="4320" lry="1110"/>
+        <zone xml:id="sys3" ulx="2300" uly="1130" lrx="4320" lry="1480"/>
+        <zone xml:id="sys4" ulx="2300" uly="1490" lrx="4320" lry="1820"/>
+      </surface>
+    </facsimile>
+    <body>
+      <mdiv>
+        <score>
+          <scoreDef>
+            <staffGrp>
+              <staffDef n="1" lines="5" clef.shape="G" clef.line="2" keysig="0" meter.count="4" meter.unit="4"/>
+            </staffGrp>
+          </scoreDef>
+          <section>
+            <!-- m1: 蝶々 (ソ ミ ミ)。原譜は「テフ ー テフ」= 1つ目の「ちょう」を
+                 G→E にわたって延ばす（メリスマ）。延ばされる音 n2 には syl を付けない。 -->
+            <measure n="1" xml:id="m1" facs="#sys1">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n1" pname="g" oct="4" dur="4"><verse n="1"><syl>ちょう</syl></verse></note>
+                  <note xml:id="n2" pname="e" oct="4" dur="4"/>
+                  <note xml:id="n3" pname="e" oct="4" dur="4"><verse n="1"><syl>ちょう</syl></verse></note>
+                  <rest xml:id="r1" dur="4"/>
+                </layer>
+              </staff>
+            </measure>
+            <!-- m2: 蝶々 (ファ レ レ)。同じく F→D をメリスマで延ばす。 -->
+            <measure n="2" xml:id="m2" facs="#sys1">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n4" pname="f" oct="4" dur="4"><verse n="1"><syl>ちょう</syl></verse></note>
+                  <note xml:id="n5" pname="d" oct="4" dur="4"/>
+                  <note xml:id="n6" pname="d" oct="4" dur="4"><verse n="1"><syl>ちょう</syl></verse></note>
+                  <rest xml:id="r2" dur="4"/>
+                </layer>
+              </staff>
+            </measure>
+            <!-- m3: 菜の葉に (ド レ ミ ファ) -->
+            <measure n="3" xml:id="m3" facs="#sys1">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n7" pname="c" oct="4" dur="4"><verse n="1"><syl>な</syl></verse></note>
+                  <note xml:id="n8" pname="d" oct="4" dur="4"><verse n="1"><syl>の</syl></verse></note>
+                  <note xml:id="n9" pname="e" oct="4" dur="4"><verse n="1"><syl>は</syl></verse></note>
+                  <note xml:id="n10" pname="f" oct="4" dur="4"><verse n="1"><syl>に</syl></verse></note>
+                </layer>
+              </staff>
+            </measure>
+            <!-- m4: とまれ (ソ ソ ソ) -->
+            <measure n="4" xml:id="m4" facs="#sys1">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n11" pname="g" oct="4" dur="4"><verse n="1"><syl>と</syl></verse></note>
+                  <note xml:id="n12" pname="g" oct="4" dur="4"><verse n="1"><syl>ま</syl></verse></note>
+                  <note xml:id="n13" pname="g" oct="4" dur="4"><verse n="1"><syl>れ</syl></verse></note>
+                  <rest xml:id="r3" dur="4"/>
+                </layer>
+              </staff>
+            </measure>
+          </section>
+        </score>
+      </mdiv>
+    </body>
+  </music>
+</mei>

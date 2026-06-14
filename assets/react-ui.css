@@ -1,0 +1,619 @@
+/* Vendored from @nakamura196/react-ui v0.5.0 (MIT). tokens + static. */
+/*
+ * @nakamura196/react-ui — design tokens
+ * 東京大学 Visual Identity Guidelines (2024-06) の配色・書体に倣う。
+ * 方向性は "Structured"(青+黄を差し色、白黒を基調=知的)。ロゴ/シンボルマークは不使用。
+ *
+ * 使い方(各アプリ):
+ *   1) グローバルCSSで `@import '@nakamura196/react-ui/styles.css';`
+ *   2) Tailwind v4 に DS のソースを走査させる:
+ *        @source '../../node_modules/@nakamura196/react-ui/src';
+ *   3) Noto Sans JP / Noto Serif JP を読み込み、--ds-font-* を上書き(任意・推奨)
+ */
+
+:root {
+  /* --- UTokyo brand (raw) --- */
+  --ds-blue: #0b8bee; /* UTokyo Blue (PANTONE 2194C) */
+  --ds-yellow: #ffcd00; /* UTokyo Yellow (PANTONE 116C) */
+
+  /* UTokyo Blue tonal scale (p.28) */
+  --ds-blue-50: #e7f3fd;
+  --ds-blue-100: #cee8fc;
+  --ds-blue-200: #b6dcfa;
+  --ds-blue-300: #9dd1f8;
+  --ds-blue-400: #6db9f5;
+  --ds-blue-500: #3ca2f1;
+  --ds-blue-600: #0b8bee;
+  --ds-blue-700: #096fbe;
+  --ds-blue-800: #07538f;
+  --ds-blue-900: #04385f;
+  --ds-blue-950: #021c30;
+
+  /* --- semantic (light) --- */
+  --ds-bg: #ffffff;
+  --ds-surface: #f7f9fb;
+  --ds-surface-2: #eef2f7;
+  --ds-border: #e2e8f0;
+  --ds-fg: #1a1a1a;
+  --ds-fg-muted: #51607a;
+  --ds-primary: var(--ds-blue);
+  --ds-primary-hover: #096fbe;
+  --ds-primary-fg: #ffffff;
+  --ds-accent: var(--ds-yellow);
+  --ds-ring: #3ca2f1;
+
+  /* --- typography --- */
+  /* アプリが next/font で Noto を読み込み、これらを上書きするのを推奨 */
+  --ds-font-sans: "Noto Sans JP", ui-sans-serif, system-ui, -apple-system,
+    "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  --ds-font-serif: "Noto Serif JP", ui-serif, Georgia, "Hiragino Mincho ProN",
+    "Yu Mincho", serif;
+
+  --ds-radius: 0.5rem;
+}
+
+.dark {
+  /* ダークは UTokyo の濃青を基調(p.13 の dark 背景) */
+  --ds-bg: #010e18;
+  --ds-surface: #021c30;
+  --ds-surface-2: #032a47;
+  --ds-border: #04385f;
+  --ds-fg: #e7f3fd;
+  --ds-fg-muted: #9dd1f8;
+  --ds-primary: #3ca2f1;
+  --ds-primary-hover: #6db9f5;
+  --ds-primary-fg: #010e18;
+  --ds-accent: #ffd733;
+  --ds-ring: #6db9f5;
+}
+
+/*
+ * @nakamura196/react-ui — static.css
+ * 素の HTML / 非 React なサイト(GitHub Pages 等) から `<link>` 1 本で
+ * 同じデザインシステムを使えるようにするためのスタンドアロン CSS。
+ *
+ * 使い方:
+ *   <link rel="stylesheet"
+ *         href="https://cdn.jsdelivr.net/gh/nakamura196/react-ui@v0.4.0/src/styles/static.css">
+ *
+ *   <body>
+ *     <header class="ds-header">…</header>
+ *     <main class="ds-container">…</main>
+ *     <footer class="ds-footer">…</footer>
+ *   </body>
+ *
+ * 提供クラス:
+ *   レイアウト: .ds-container .ds-stack .ds-section
+ *   ヘッダー   : .ds-header .ds-header__inner .ds-header__brand
+ *                .ds-header__nav .ds-header__nav-link .ds-header__actions
+ *   フッター   : .ds-footer .ds-footer__inner .ds-footer__grid
+ *                .ds-footer__col .ds-footer__heading .ds-footer__list
+ *                .ds-footer__link .ds-footer__copyright
+ *   フォーム   : .ds-input .ds-label .ds-field .ds-btn .ds-btn--secondary
+ *                .ds-btn--sm .ds-btn--lg
+ *   カード     : .ds-card .ds-card__title
+ *   見出し     : .ds-h1 .ds-h2 .ds-lead
+ *   テーブル   : .ds-table-wrap + 内部の jQuery DataTables のテーマ上書き
+ *
+ * カラーモード:
+ *   - <html class="dark"> でダーク強制(next-themes と互換)
+ *   - クラスを付けない場合は prefers-color-scheme でシステム追従
+ *   - 強制ライトにしたい場合は <html class="light">
+ */
+
+@import url("./tokens.css");
+
+/* Noto は Google Fonts から自動読込(静的サイト用)。
+ * Next.js アプリ側は next/font で別途読み込み、--ds-font-* を上書きするので
+ * この import の影響は無視される。 */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;600;700&display=swap");
+
+/* prefers-color-scheme でのダーク追従(<html class="light"> 指定時は無視) */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --ds-bg: #010e18;
+    --ds-surface: #021c30;
+    --ds-surface-2: #032a47;
+    --ds-border: #04385f;
+    --ds-fg: #e7f3fd;
+    --ds-fg-muted: #9dd1f8;
+    --ds-primary: #3ca2f1;
+    --ds-primary-hover: #6db9f5;
+    --ds-primary-fg: #010e18;
+    --ds-accent: #ffd733;
+    --ds-ring: #6db9f5;
+  }
+}
+
+/* --- リセット & ベース --------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ds-bg);
+  color: var(--ds-fg);
+  font-family: var(--ds-font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--ds-primary);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.875em;
+  padding: 0.125rem 0.375rem;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: 0.25rem;
+  color: var(--ds-fg);
+}
+
+/* --- レイアウト --------------------------------------------------------- */
+
+.ds-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.ds-section {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.ds-stack > * + * {
+  margin-top: 1rem;
+}
+
+/* --- 見出し ------------------------------------------------------------- */
+
+.ds-h1 {
+  font-family: var(--ds-font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--ds-fg);
+  margin: 0 0 0.75rem;
+}
+
+.ds-h2 {
+  font-family: var(--ds-font-serif);
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ds-fg);
+  margin: 0 0 0.5rem;
+}
+
+.ds-lead {
+  color: var(--ds-fg-muted);
+  font-size: 1rem;
+  margin: 0 0 1rem;
+}
+
+/* --- ユーティリティ ----------------------------------------------------- */
+
+.ds-muted {
+  color: var(--ds-fg-muted);
+}
+
+.ds-error {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--ds-radius);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .ds-error {
+    color: #fecaca;
+    background: rgba(220, 38, 38, 0.12);
+    border-color: rgba(220, 38, 38, 0.4);
+  }
+}
+:root.dark .ds-error {
+  color: #fecaca;
+  background: rgba(220, 38, 38, 0.12);
+  border-color: rgba(220, 38, 38, 0.4);
+}
+
+/* 大画面ではフィールドとボタンを横に並べたい時の補助 */
+.ds-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+@media (min-width: 640px) {
+  .ds-form-row {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+  .ds-form-row > .ds-field {
+    flex: 1;
+    margin-bottom: 0;
+  }
+}
+
+/* --- ヘッダー(React Header.tsx と同等の見た目) ------------------------- */
+
+.ds-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--ds-bg);
+  border-bottom: 1px solid var(--ds-border);
+}
+
+.ds-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3.5rem;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.ds-header__brand {
+  font-family: var(--ds-font-serif);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--ds-primary);
+  text-decoration: none;
+}
+.ds-header__brand:hover {
+  text-decoration: none;
+}
+
+.ds-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+@media (min-width: 640px) {
+  .ds-header__nav {
+    gap: 1.25rem;
+  }
+}
+
+.ds-header__nav-link {
+  font-size: 0.875rem;
+  color: var(--ds-fg-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.ds-header__nav-link:hover {
+  color: var(--ds-primary);
+  text-decoration: none;
+}
+
+.ds-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* --- フッター(React Footer.tsx と同等の見た目) ------------------------- */
+
+.ds-footer {
+  background: var(--ds-surface);
+  color: var(--ds-fg);
+  border-top: 2px solid var(--ds-primary);
+  margin-top: 3rem;
+}
+
+.ds-footer__inner {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 3rem 1rem;
+}
+
+.ds-footer__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+/* 子要素数に応じて 2〜4 列に切り替える(React 側の動的列数と等価) */
+@media (min-width: 768px) {
+  .ds-footer__grid:has(> *:nth-child(2):last-child) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ds-footer__grid:has(> *:nth-child(3):last-child) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .ds-footer__grid:has(> *:nth-child(4)) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.ds-footer__brand {
+  font-family: var(--ds-font-serif);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--ds-fg);
+  margin: 0;
+}
+
+.ds-footer__brand-desc {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ds-fg-muted);
+}
+
+.ds-footer__heading {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ds-fg);
+  margin: 0 0 0.75rem;
+}
+
+.ds-footer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+}
+.ds-footer__list > li + li {
+  margin-top: 0.5rem;
+}
+
+.ds-footer__link {
+  color: var(--ds-fg-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.ds-footer__link:hover {
+  color: var(--ds-primary);
+  text-decoration: none;
+}
+
+.ds-footer__copyright {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ds-border);
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--ds-fg-muted);
+}
+
+/* --- フォーム ----------------------------------------------------------- */
+
+.ds-field {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.ds-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ds-fg);
+  margin-bottom: 0.375rem;
+}
+
+.ds-input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.875rem;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--ds-fg);
+  background: var(--ds-bg);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.ds-input:focus {
+  outline: none;
+  border-color: var(--ds-primary);
+  box-shadow: 0 0 0 3px rgba(60, 162, 241, 0.25);
+}
+.ds-input::placeholder {
+  color: var(--ds-fg-muted);
+  opacity: 0.7;
+}
+
+/* --- ボタン(React Button.tsx と同等) ----------------------------------- */
+
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ds-primary-fg);
+  background: var(--ds-primary);
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  text-decoration: none;
+}
+.ds-btn:hover {
+  background: var(--ds-primary-hover);
+  text-decoration: none;
+}
+.ds-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(60, 162, 241, 0.4);
+}
+.ds-btn:disabled,
+.ds-btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ds-btn--secondary {
+  color: var(--ds-fg);
+  background: var(--ds-surface);
+  border-color: var(--ds-border);
+}
+.ds-btn--secondary:hover {
+  background: var(--ds-surface);
+  border-color: var(--ds-primary);
+}
+
+.ds-btn--sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.ds-btn--lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+/* --- カード ------------------------------------------------------------- */
+
+.ds-card {
+  background: var(--ds-bg);
+  border: 1px solid var(--ds-border);
+  border-radius: calc(var(--ds-radius) * 1.5);
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.ds-card__title {
+  font-family: var(--ds-font-serif);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--ds-fg);
+  margin: 0 0 1rem;
+}
+
+/* --- DataTables テーマ -------------------------------------------------- */
+
+.ds-table-wrap {
+  margin-top: 1.5rem;
+  overflow-x: auto;
+}
+
+.ds-table-wrap table.dataTable {
+  width: 100% !important;
+  border-collapse: collapse;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius);
+  overflow: hidden;
+  font-size: 0.875rem;
+}
+
+.ds-table-wrap table.dataTable thead th {
+  background: var(--ds-surface);
+  color: var(--ds-fg);
+  text-align: left;
+  padding: 0.625rem 0.75rem;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid var(--ds-border);
+}
+
+.ds-table-wrap table.dataTable tbody td {
+  padding: 0.625rem 0.75rem;
+  color: var(--ds-fg);
+  border-top: 1px solid var(--ds-border);
+}
+
+.ds-table-wrap table.dataTable tbody tr:hover {
+  background: var(--ds-surface-2);
+}
+
+/* 検索ボックス・件数セレクタ */
+.ds-table-wrap .dataTables_wrapper .dataTables_filter,
+.ds-table-wrap .dataTables_wrapper .dataTables_length {
+  margin-bottom: 1rem;
+  color: var(--ds-fg-muted);
+  font-size: 0.875rem;
+}
+.ds-table-wrap .dataTables_wrapper .dataTables_filter input,
+.ds-table-wrap .dataTables_wrapper .dataTables_length select {
+  margin-left: 0.5rem;
+  padding: 0.375rem 0.625rem;
+  background: var(--ds-bg);
+  color: var(--ds-fg);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius);
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+.ds-table-wrap .dataTables_wrapper .dataTables_filter input:focus,
+.ds-table-wrap .dataTables_wrapper .dataTables_length select:focus {
+  outline: none;
+  border-color: var(--ds-primary);
+  box-shadow: 0 0 0 3px rgba(60, 162, 241, 0.25);
+}
+
+/* 件数表示 */
+.ds-table-wrap .dataTables_wrapper .dataTables_info {
+  color: var(--ds-fg-muted);
+  font-size: 0.8125rem;
+  padding-top: 0.75rem;
+}
+
+/* ページネーション */
+.ds-table-wrap .dataTables_wrapper .dataTables_paginate {
+  padding-top: 0.75rem;
+}
+.ds-table-wrap .dataTables_wrapper .dataTables_paginate .paginate_button {
+  display: inline-block;
+  padding: 0.25rem 0.625rem !important;
+  margin: 0 0.125rem;
+  border: 1px solid var(--ds-border) !important;
+  border-radius: var(--ds-radius);
+  background: var(--ds-bg) !important;
+  color: var(--ds-fg) !important;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.ds-table-wrap .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: var(--ds-surface) !important;
+  border-color: var(--ds-primary) !important;
+  color: var(--ds-primary) !important;
+}
+.ds-table-wrap .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.ds-table-wrap .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background: var(--ds-primary) !important;
+  border-color: var(--ds-primary) !important;
+  color: var(--ds-primary-fg) !important;
+}
+.ds-table-wrap .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.ds-table-wrap .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--ds-bg) !important;
+  border-color: var(--ds-border) !important;
+  color: var(--ds-fg-muted) !important;
+}

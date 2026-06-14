@@ -1,0 +1,21 @@
+{
+  "@context": "https://distributed-text-services.github.io/specifications/context/1-alpha1.json",
+  "dtsVersion": "1-alpha",
+  "dts:version": "1-alpha",
+  "@id": "urn:shoka",
+  "@type": "Collection",
+  "title": "小学唱歌集",
+  "totalParents": 0,
+  "totalChildren": 1,
+  "collection": "https://nakamura196.github.io/mei-viewer/dts/collection/root.json",
+  "member": [
+    {
+      "@id": "urn:shoka:shohen",
+      "@type": "Collection",
+      "title": "小学唱歌集 初編",
+      "totalParents": 1,
+      "totalChildren": 1,
+      "collection": "https://nakamura196.github.io/mei-viewer/dts/collection/shohen.json"
+    }
+  ]
+}

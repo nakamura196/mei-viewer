@@ -1,0 +1,17 @@
+{
+  "id": "choucho",
+  "title": "蝶々（第十七）",
+  "title_en": "Chōchō (No. 17)",
+  "collection": "小学唱歌集 初編",
+  "creator": "文部省音楽取調掛 編",
+  "date": "1881–1884",
+  "ndl_pid": "992051",
+  "ndl_url": "https://dl.ndl.go.jp/info:ndljp/pid/992051",
+  "iiif_image": "https://dl.ndl.go.jp/api/iiif/992051/R0000017",
+  "iiif_info": "https://dl.ndl.go.jp/api/iiif/992051/R0000017/info.json",
+  "rights": "PDM",
+  "mei": "choucho.mei",
+  "lyrics": "lyrics.json",
+  "encoded_scope": "第1フレーズ（4小節）の音高を検証済み。第2〜4段は原資料リンクと歌詞のみ。",
+  "tags": ["MEI 5.1", "IIIF", "唱歌", "1881"]
+}

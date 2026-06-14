@@ -1,0 +1,84 @@
+{
+  "@context": "https://distributed-text-services.github.io/specifications/context/1-alpha1.json",
+  "dtsVersion": "1-alpha",
+  "dts:version": "1-alpha",
+  "@id": "https://nakamura196.github.io/mei-viewer/dts/navigation/choucho.json",
+  "@type": "Navigation",
+  "resource": {
+    "@id": "urn:shoka:shohen:choucho",
+    "@type": "Resource",
+    "document": "https://nakamura196.github.io/mei-viewer/dts/document/choucho.tei.xml"
+  },
+  "member": [
+    {
+      "identifier": "1",
+      "@type": "CitableUnit",
+      "level": 1,
+      "citeType": "stanza",
+      "parent": null
+    },
+    {
+      "identifier": "1.1",
+      "@type": "CitableUnit",
+      "level": 2,
+      "citeType": "line",
+      "parent": "1"
+    },
+    {
+      "identifier": "1.2",
+      "@type": "CitableUnit",
+      "level": 2,
+      "citeType": "line",
+      "parent": "1"
+    },
+    {
+      "identifier": "1.3",
+      "@type": "CitableUnit",
+      "level": 2,
+      "citeType": "line",
+      "parent": "1"
+    },
+    {
+      "identifier": "1.4",
+      "@type": "CitableUnit",
+      "level": 2,
+      "citeType": "line",
+      "parent": "1"
+    },
+    {
+      "identifier": "2",
+      "@type": "CitableUnit",
+      "level": 1,
+      "citeType": "stanza",
+      "parent": null
+    },
+    {
+      "identifier": "2.1",
+      "@type": "CitableUnit",
+      "level": 2,
+      "citeType": "line",
+      "parent": "2"
+    },
+    {
+      "identifier": "2.2",
+      "@type": "CitableUnit",
+      "level": 2,
+      "citeType": "line",
+      "parent": "2"
+    },
+    {
+      "identifier": "2.3",
+      "@type": "CitableUnit",
+      "level": 2,
+      "citeType": "line",
+      "parent": "2"
+    },
+    {
+      "identifier": "2.4",
+      "@type": "CitableUnit",
+      "level": 2,
+      "citeType": "line",
+      "parent": "2"
+    }
+  ]
+}

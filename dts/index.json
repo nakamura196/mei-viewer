@@ -1,0 +1,10 @@
+{
+  "@context": "https://distributed-text-services.github.io/specifications/context/1-alpha1.json",
+  "@id": "https://nakamura196.github.io/mei-viewer/dts/",
+  "@type": "EntryPoint",
+  "dtsVersion": "1-alpha",
+  "dts:version": "1-alpha",
+  "collection": "https://nakamura196.github.io/mei-viewer/dts/collection/root.json",
+  "navigation": "https://nakamura196.github.io/mei-viewer/dts/navigation/{resource}.json",
+  "document": "https://nakamura196.github.io/mei-viewer/dts/document/{resource}.tei.xml"
+}

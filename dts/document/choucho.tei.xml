@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="ja">
+  
+
+  <teiHeader>
+    <fileDesc>
+      
+
+      <titleStmt>
+        <title>蝶々（第十七）</title>
+      </titleStmt>
+      
+
+      <publicationStmt>
+        <availability status="free">
+          <licence target="https://creativecommons.org/publicdomain/zero/1.0/">CC0 (encoding). Source: Public Domain Mark.</licence>
+        </availability>
+      </publicationStmt>
+      
+
+      <sourceDesc>
+        <bibl>
+          <title>小学唱歌集 初編</title>
+          <respStmt>
+            <resp>編</resp>
+            <name>文部省音楽取調掛 編</name>
+          </respStmt>
+          <date>1881–1884</date>
+          <idno type="NDLJP">info:ndljp/pid/992051</idno>
+          <ref target="https://dl.ndl.go.jp/info:ndljp/pid/992051">NDL</ref>
+        </bibl>
+      </sourceDesc>
+      
+
+    </fileDesc>
+  </teiHeader>
+  
+
+  <facsimile>
+    <surface>
+      <graphic url="https://dl.ndl.go.jp/api/iiif/992051/R0000017/full/full/0/default.jpg"/>
+      
+
+      <zone xml:id="v1l1" ulx="1800" uly="332" lrx="1906" lry="1712"/>
+      
+
+      <zone xml:id="v1l2" ulx="1613" uly="460" lrx="1714" lry="1694"/>
+      
+
+      <zone xml:id="v1l3" ulx="1409" uly="452" lrx="1511" lry="1690"/>
+      
+
+      <zone xml:id="v1l4" ulx="1199" uly="455" lrx="1292" lry="1684"/>
+      
+
+      <zone xml:id="v2l1" ulx="901" uly="335" lrx="1010" lry="1730"/>
+      
+
+      <zone xml:id="v2l2" ulx="708" uly="488" lrx="789" lry="1712"/>
+      
+
+      <zone xml:id="v2l3" ulx="498" uly="485" lrx="581" lry="1712"/>
+      
+
+      <zone xml:id="v2l4" ulx="292" uly="475" lrx="390" lry="1718"/>
+      
+
+    </surface>
+  </facsimile>
+  
+
+  <text>
+    <body>
+      
+
+      <lg type="stanza" n="1">
+        
+
+        <l n="v1l1" facs="#v1l1">蝶々 蝶々、菜の葉にとまれ</l>
+        
+
+        <l n="v1l2" facs="#v1l2">菜の葉に飽いたら、桜にとまれ</l>
+        
+
+        <l n="v1l3" facs="#v1l3">桜の花の、栄ゆる御代に</l>
+        
+
+        <l n="v1l4" facs="#v1l4">止まれよ遊べ、遊べよ止まれ</l>
+        
+
+      </lg>
+      
+
+      <lg type="stanza" n="2">
+        
+
+        <l n="v2l1" facs="#v2l1">起きよ起きよ、ねぐらの雀を</l>
+        
+
+        <l n="v2l2" facs="#v2l2">朝日の光の、射し込ぬ先に</l>
+        
+
+        <l n="v2l3" facs="#v2l3">ねぐらを出でて、梢にとまり</l>
+        
+
+        <l n="v2l4" facs="#v2l4">遊べよ雀、歌へよ雀</l>
+        
+
+      </lg>
+      
+
+    </body>
+  </text>
+  
+
+</TEI>
