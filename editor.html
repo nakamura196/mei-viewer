@@ -154,7 +154,7 @@ function frameZone(zid){
   const rect = img.imageToViewportRectangle(z.ulx, z.uly, z.lrx-z.ulx, z.lry-z.uly);
   if(!ov){ ov=document.createElement("div"); ov.style.cssText="border:3px solid var(--ds-blue);border-radius:4px;pointer-events:none;"; viewer.addOverlay({element:ov,location:rect}); }
   else viewer.updateOverlay(ov, rect);
-  viewer.viewport.fitBoundsWithConstraints(rect.times(1.15));
+  // 視点は動かさない（枠表示のみ）。画像のパン/ズームはユーザー操作に任せる。
 }
 
 function exportMEI(){ return new XMLSerializer().serializeToString(meiXML); }
