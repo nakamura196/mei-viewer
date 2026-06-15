@@ -13,19 +13,24 @@
 <script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.77,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.5.0" defer></script>
 <style>
   body { font-family: var(--ds-font-sans); background: var(--ds-bg); color: var(--ds-fg); }
-  .grid { display:grid; gap:16px; grid-template-columns: 1fr; }
-  @media (min-width: 1000px){ .grid { grid-template-columns: 1.05fr 1.15fr 0.55fr; } }
-  .panel { background:var(--ds-surface); border:1px solid var(--ds-border); border-radius:var(--ds-radius); padding:12px; }
+  .vwrap { max-width:1760px; margin:0 auto; padding:18px 24px 8px; }
+  /* align header/footer to the wider viewer content (react-ui default is 1280px) */
+  .ds-header__inner, .ds-footer__inner { max-width:1760px; }
+  .main2 { display:grid; gap:16px; grid-template-columns:1fr; }
+  @media (min-width:1024px){ .main2 { grid-template-columns:minmax(0,1.8fr) minmax(0,1fr); align-items:start; } }
+  .side { display:flex; flex-direction:column; gap:16px; min-width:0; }
+  .notation-panel { margin-bottom:16px; }
+  .panel { background:var(--ds-surface); border:1px solid var(--ds-border); border-radius:var(--ds-radius); padding:12px; min-width:0; }
   .panel h2 { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ds-fg-muted);
               margin:0 0 8px; font-weight:700; font-family:var(--ds-font-sans); }
-  #notation { background:#fff; border-radius:8px; padding:6px; overflow:auto; }
-  #notation svg { width:100%; height:auto; }
+  #notation { background:#fff; border-radius:8px; padding:10px 6px; overflow-x:auto; text-align:center; }
+  #notation svg { height:170px; width:auto; max-width:none; display:inline-block; }
   #notation g.note { cursor:pointer; }
   #notation g.note.sel * { fill:var(--ds-blue)!important; stroke:var(--ds-blue)!important; }
   #notation g.note.playing * { fill:#1f8a4c!important; stroke:#1f8a4c!important; }
   .controls { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:10px 0 4px; }
   midi-player { width:100%; margin-top:6px; --md-sys-color-primary:var(--ds-blue); }
-  #osd { width:100%; height:460px; background:#000; border-radius:8px; }
+  #osd { width:100%; height:620px; background:#000; border-radius:8px; }
   .data table { width:100%; border-collapse:collapse; font-size:13px; }
   .data td { padding:4px 6px; border-bottom:1px solid var(--ds-border); }
   .data td.k { color:var(--ds-fg-muted); width:38%; }
@@ -57,41 +62,40 @@
   </div>
 </header>
 
-<main class="ds-container ds-section">
+<main class="vwrap">
   <h1 class="ds-h1">「蝶々」 ― MEI × IIIF ビューア</h1>
   <p class="ds-lead">『小学唱歌集 初編』第十七「蝶々」（国立国会図書館蔵）を題材に、構造化楽譜（MEI）と原資料画像（IIIF）、縦書き歌詞を相互にリンクします。</p>
   <p class="ai-note">楽譜の音符をクリックすると、原資料画像の該当段と縦書き歌詞の対応行が同時にハイライトされます。「▶ 再生」で旋律を音にできます。本デモは生成AIと共同制作しており、第1フレーズの音高は底本で検証していますが、誤りが含まれる可能性があります。</p>
 
-  <div class="grid">
-    <!-- column 1: notation + playback + data -->
-    <div>
-      <div class="panel">
-        <h2>MEI → 楽譜（Verovio 描画）</h2>
-        <div id="notation">読み込み中…</div>
-        <div class="controls">
-          <button class="ds-btn ds-btn--sm" id="play">▶ 再生</button>
-          <button class="ds-btn ds-btn--secondary ds-btn--sm" id="stop">■ 停止</button>
-        </div>
-        <midi-player id="player" sound-font></midi-player>
-      </div>
-      <div class="panel data" style="margin-top:16px">
-        <h2>構造化データ（クリックした音符）</h2>
-        <div id="data"><p class="hint">音符をクリックすると、MEI が保持する音高・音価・歌詞・小節・原資料座標が表示されます。<br>「画像」ではなく「データ」だからこそ、検索・分析・再生・原資料へのリンクができます。</p></div>
-      </div>
+  <!-- notation: full width on top -->
+  <div class="panel notation-panel">
+    <h2>MEI → 楽譜（Verovio 描画）</h2>
+    <div id="notation">読み込み中…</div>
+    <div class="controls">
+      <button class="ds-btn ds-btn--sm" id="play">▶ 再生</button>
+      <button class="ds-btn ds-btn--secondary ds-btn--sm" id="stop">■ 停止</button>
+      <span class="hint" style="margin-left:4px">音符をクリック → 原資料の段と縦書き歌詞が同期。</span>
     </div>
+    <midi-player id="player" sound-font></midi-player>
+  </div>
 
-    <!-- column 2: IIIF facsimile -->
+  <!-- main: large IIIF facsimile + side (lyrics + data) -->
+  <div class="main2">
     <div class="panel">
       <h2>原資料（IIIF・OpenSeadragon）</h2>
       <div id="osd"></div>
       <p class="hint" style="margin-top:8px">青枠＝選択中の楽譜の段（右丁）／橙枠＝対応する縦書き歌詞の行（左丁）。第2〜4段の音高は未符号化で、原資料リンクのみ。</p>
     </div>
-
-    <!-- column 3: vertical lyric text (OCR honkoku) -->
-    <div class="panel">
-      <h2>歌詞・翻刻（NDL古典籍OCR-Lite）</h2>
-      <div class="honkoku" id="honkoku"></div>
-      <p class="hint" style="margin-top:8px">縦書き本文を NDL古典籍OCR-Lite で自動翻刻し、行の座標で原資料にリンク。行をクリックすると原資料の該当箇所へ移動します。<span class="conf">数値=OCR信頼度</span>。</p>
+    <div class="side">
+      <div class="panel">
+        <h2>歌詞・翻刻（NDL古典籍OCR-Lite）</h2>
+        <div class="honkoku" id="honkoku"></div>
+        <p class="hint" style="margin-top:8px">縦書き本文を NDL古典籍OCR-Lite で自動翻刻し、行の座標で原資料にリンク。行をクリックすると原資料の該当箇所へ移動します。<span class="conf">数値=OCR信頼度</span>。</p>
+      </div>
+      <div class="panel data">
+        <h2>構造化データ（クリックした音符）</h2>
+        <div id="data"><p class="hint">音符をクリックすると、MEI が保持する音高・音価・歌詞・小節・原資料座標が表示されます。<br>「画像」ではなく「データ」だからこそ、検索・分析・再生・原資料へのリンクができます。</p></div>
+      </div>
     </div>
   </div>
 </main>
@@ -106,6 +110,8 @@
       <div class="ds-footer__col">
         <h2 class="ds-footer__heading">関連リンク</h2>
         <ul class="ds-footer__list">
+          <li><a class="ds-footer__link" href="dts/index.json">DTS API（静的・EntryPoint JSON）</a></li>
+          <li><a class="ds-footer__link" href="https://nakamura196.github.io/dts-viewer/ja/?base=https://nakamura196.github.io/mei-viewer/dts/&amp;url=https://nakamura196.github.io/mei-viewer/dts/collection/root.json" target="_blank" rel="noopener">dts-viewer で開く</a></li>
           <li><a class="ds-footer__link" href="https://music-encoding.org" target="_blank" rel="noopener">Music Encoding Initiative</a></li>
           <li><a class="ds-footer__link" href="https://iiif.io" target="_blank" rel="noopener">IIIF</a></li>
           <li><a class="ds-footer__link" href="https://dl.ndl.go.jp/info:ndljp/pid/992051" target="_blank" rel="noopener">底本: NDL pid 992051（PDM）</a></li>
@@ -193,7 +199,7 @@ function selectNote(id){
 
 function selectLyric(l){
   highlightLyricRow(l.id);
-  frameZone(l.id, "lyric");
+  drawOverlay(l.id, "lyric");   // highlight only — no panTo (keeps the whole spread visible)
   drawOverlay(l.sys, "music");
   // also select the matching encoded note (first note of that system), if verse 1
   const firstNote = meiXML.querySelector(`measure[facs="#${l.sys}"] note`);
@@ -254,12 +260,18 @@ window.addEventListener("load", async () => {
     catch(e){ return setTimeout(ready, 120); }
     (async () => {
       tk = t;
-      tk.setOptions({ scale:40, adjustPageHeight:true, header:"none", footer:"none",
+      tk.setOptions({ scale:60, adjustPageHeight:true, header:"none", footer:"none",
                       pageMarginTop:6, pageMarginBottom:6, pageMarginLeft:6, pageMarginRight:6 });
       const meiText = await loadData();
       renderNotation(meiText);
       buildHonkoku();
-      viewer.addHandler("open", () => frameZone("sys1","music"));
+      // show the whole spread first with sys1 marked. Guard against the race where
+      // OSD's "open" already fired before this handler is attached.
+      const showInitial = () => { drawOverlay("sys1","music"); viewer.viewport.goHome(true); };
+      if (viewer.world.getItemCount() > 0) showInitial();
+      else viewer.addHandler("open", showInitial);
+      // re-fit once the honkoku panel has been laid out
+      setTimeout(() => { if (viewer.world.getItemCount() > 0) viewer.viewport.goHome(true); }, 500);
     })();
   })();
 

@@ -63,6 +63,13 @@
     <div class="ds-card"><h3>② 縦書き歌詞リンク</h3><p>左丁の縦書き本文を NDL古典籍OCR-Lite で翻刻し、行の座標で楽譜・画像と結びます。</p></div>
     <div class="ds-card"><h3>③ 再生</h3><p>MEI から MIDI を生成し、ブラウザ上で旋律を再生。鳴っている音符が同期して光ります。</p></div>
   </div>
+
+  <h2 class="ds-h2" style="margin-top:34px">API として使う（DTS）</h2>
+  <p class="lead-sub">この目録は <strong>DTS（Distributed Text Services）</strong> の静的エンドポイントとしても公開しています。歌詞を TEI、楽譜を MEI（代替フォーマット）で配信し、外部のクライアントから機械的に取得・引用できます。</p>
+  <p style="margin-top:10px">
+    <a class="ds-btn ds-btn--sm" href="https://nakamura196.github.io/dts-viewer/ja/?base=https://nakamura196.github.io/mei-viewer/dts/&amp;url=https://nakamura196.github.io/mei-viewer/dts/collection/root.json" target="_blank" rel="noopener">dts-viewer で開く →</a>
+    <a class="ds-btn ds-btn--secondary ds-btn--sm" href="dts/index.json" style="margin-left:8px">EntryPoint JSON</a>
+  </p>
 </main>
 
 <footer class="ds-footer">
@@ -76,6 +83,8 @@
         <h2 class="ds-footer__heading">関連リンク</h2>
         <ul class="ds-footer__list">
           <li><a class="ds-footer__link" href="viewer.html">蝶々ビューア</a></li>
+          <li><a class="ds-footer__link" href="dts/index.json">DTS API（EntryPoint JSON）</a></li>
+          <li><a class="ds-footer__link" href="https://nakamura196.github.io/dts-viewer/ja/?base=https://nakamura196.github.io/mei-viewer/dts/&amp;url=https://nakamura196.github.io/mei-viewer/dts/collection/root.json" target="_blank" rel="noopener">dts-viewer で開く</a></li>
           <li><a class="ds-footer__link" href="https://music-encoding.org" target="_blank" rel="noopener">Music Encoding Initiative</a></li>
           <li><a class="ds-footer__link" href="https://iiif.io" target="_blank" rel="noopener">IIIF</a></li>
           <li><a class="ds-footer__link" href="https://dl.ndl.go.jp/info:ndljp/pid/992051" target="_blank" rel="noopener">底本: NDL pid 992051</a></li>
