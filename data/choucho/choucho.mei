@@ -32,7 +32,7 @@
     </fileDesc>
     <encodingDesc>
       <editorialDecl>
-        <p xml:lang="ja">第1フレーズ（4小節）は音高も検証済み。音高・リズムとも第十七「蝶々」第1段の楽譜（NDL pid 992051, 第17コマ右丁）を底本とし、五線上の符頭・連桁・符尾から判読した。拍子は原譜どおり 4/8。音高はソミミ／ファレレ／ドレミファ／ソソソ、音価は各小節が8分音符4つぶん（8分2＋4分1、第3小節のみ8分4）。「テフ ー テフ」のメリスマはスラーで表す。第2〜4段（第5〜16小節）も符号化した。第2〜4段の音高は1小節ずつ精読して反映した。起伏（高低の輪郭）は確度が高いが、低・中音域の厳密な音高（E4／F4／D4の別など）は木版劣化により±1程度の不確実性が残り、原資料（facsimile）で校訂されたい。リズム（各小節4/8）・小節構造・歌詞（底本どおりカタカナ）は確実。第3段は低く平坦、第4段は下行する底本独自の旋律。</p>
+        <p xml:lang="ja">第1フレーズ（4小節）は音高も検証済み。音高・リズムとも第十七「蝶々」第1段の楽譜（NDL pid 992051, 第17コマ右丁）を底本とし、五線上の符頭・連桁・符尾から判読した。拍子は原譜どおり 4/8。音高はソミミ／ファレレ／ドレミファ／ソソソ、音価は各小節が8分音符4つぶん（8分2＋4分1、第3小節のみ8分4）。「テフ ー テフ」のメリスマはスラーで表す。第2〜4段（第5〜16小節）も符号化し、その音高は本デモの音高エディタで原資料（facsimile）と照合のうえ人手で校訂した。リズム（各小節4/8）・小節構造・歌詞（底本どおりカタカナ）も底本に忠実。第2〜3段は低く平坦、第4段は下行する底本独自の旋律。なお木版の劣化により隣接音の別にはわずかな不確実性が残りうる。</p>
       </editorialDecl>
     </encodingDesc>
   </meiHead>
@@ -118,20 +118,20 @@
             <measure n="6" xml:id="m6" facs="#sys2">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n18" pname="a" oct="4" dur="8"><verse n="1"><syl>ア</syl></verse></note>
-                  <note xml:id="n19" pname="e" oct="4" dur="8"><verse n="1"><syl>イ</syl></verse></note>
-                  <note xml:id="n20" pname="e" oct="4" dur="8"><verse n="1"><syl>タ</syl></verse></note>
-                  <note xml:id="n21" pname="e" oct="4" dur="8"><verse n="1"><syl>ラ</syl></verse></note>
+                  <note xml:id="n18" pname="f" oct="4" dur="8"><verse n="1"><syl>ア</syl></verse></note>
+                  <note xml:id="n19" pname="d" oct="4" dur="8"><verse n="1"><syl>イ</syl></verse></note>
+                  <note xml:id="n20" pname="d" oct="4" dur="8"><verse n="1"><syl>タ</syl></verse></note>
+                  <note xml:id="n21" pname="d" oct="4" dur="8"><verse n="1"><syl>ラ</syl></verse></note>
                 </layer>
               </staff>
             </measure>
             <measure n="7" xml:id="m7" facs="#sys2">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n22" pname="d" oct="4" dur="8"><verse n="1"><syl>サ</syl></verse></note>
-                  <note xml:id="n23" pname="f" oct="4" dur="8"><verse n="1"><syl>ク</syl></verse></note>
+                  <note xml:id="n22" pname="c" oct="4" dur="8"><verse n="1"><syl>サ</syl></verse></note>
+                  <note xml:id="n23" pname="e" oct="4" dur="8"><verse n="1"><syl>ク</syl></verse></note>
                   <note xml:id="n24" pname="g" oct="4" dur="8"><verse n="1"><syl>ラ</syl></verse></note>
-                  <note xml:id="n25" pname="f" oct="4" dur="8"><verse n="1"><syl>ニ</syl></verse></note>
+                  <note xml:id="n25" pname="g" oct="4" dur="8"><verse n="1"><syl>ニ</syl></verse></note>
                 </layer>
               </staff>
             </measure>
@@ -147,17 +147,17 @@
             <measure n="9" xml:id="m9" facs="#sys3">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n29" pname="e" oct="4" dur="8"><verse n="1"><syl>サ</syl></verse></note>
-                  <note xml:id="n30" pname="e" oct="4" dur="8"><verse n="1"><syl>ク</syl></verse></note>
-                  <note xml:id="n31" pname="e" oct="4" dur="8"><verse n="1"><syl>ラ</syl></verse></note>
-                  <note xml:id="n32" pname="e" oct="4" dur="8"><verse n="1"><syl>ノ</syl></verse></note>
+                  <note xml:id="n29" pname="d" oct="4" dur="8"><verse n="1"><syl>サ</syl></verse></note>
+                  <note xml:id="n30" pname="d" oct="4" dur="8"><verse n="1"><syl>ク</syl></verse></note>
+                  <note xml:id="n31" pname="d" oct="4" dur="8"><verse n="1"><syl>ラ</syl></verse></note>
+                  <note xml:id="n32" pname="d" oct="4" dur="8"><verse n="1"><syl>ノ</syl></verse></note>
                 </layer>
               </staff>
             </measure>
             <measure n="10" xml:id="m10" facs="#sys3">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n33" pname="e" oct="4" dur="8"><verse n="1"><syl>ハ</syl></verse></note>
+                  <note xml:id="n33" pname="d" oct="4" dur="8"><verse n="1"><syl>ハ</syl></verse></note>
                   <note xml:id="n34" pname="e" oct="4" dur="8"><verse n="1"><syl>ナ</syl></verse></note>
                   <note xml:id="n35" pname="f" oct="4" dur="4"><verse n="1"><syl>ノ</syl></verse></note>
                 </layer>
@@ -185,28 +185,28 @@
             <measure n="13" xml:id="m13" facs="#sys4">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n43" pname="a" oct="4" dur="8"><verse n="1"><syl>ト</syl></verse></note>
-                  <note xml:id="n44" pname="f" oct="4" dur="8"><verse n="1"><syl>マ</syl></verse></note>
+                  <note xml:id="n43" pname="g" oct="4" dur="8"><verse n="1"><syl>ト</syl></verse></note>
+                  <note xml:id="n44" pname="e" oct="4" dur="8"><verse n="1"><syl>マ</syl></verse></note>
                   <note xml:id="n45" pname="e" oct="4" dur="8"><verse n="1"><syl>レ</syl></verse></note>
-                  <note xml:id="n46" pname="g" oct="4" dur="8"><verse n="1"><syl>ヨ</syl></verse></note>
+                  <note xml:id="n46" pname="e" oct="4" dur="8"><verse n="1"><syl>ヨ</syl></verse></note>
                 </layer>
               </staff>
             </measure>
             <measure n="14" xml:id="m14" facs="#sys4">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n47" pname="a" oct="4" dur="8"><verse n="1"><syl>ア</syl></verse></note>
-                  <note xml:id="n48" pname="f" oct="4" dur="8"><verse n="1"><syl>ソ</syl></verse></note>
-                  <note xml:id="n49" pname="g" oct="4" dur="4"><verse n="1"><syl>ベ</syl></verse></note>
+                  <note xml:id="n47" pname="f" oct="4" dur="8"><verse n="1"><syl>ア</syl></verse></note>
+                  <note xml:id="n48" pname="d" oct="4" dur="8"><verse n="1"><syl>ソ</syl></verse></note>
+                  <note xml:id="n49" pname="d" oct="4" dur="4"><verse n="1"><syl>ベ</syl></verse></note>
                 </layer>
               </staff>
             </measure>
             <measure n="15" xml:id="m15" facs="#sys4">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n50" pname="e" oct="4" dur="8"><verse n="1"><syl>ア</syl></verse></note>
-                  <note xml:id="n51" pname="g" oct="4" dur="8"><verse n="1"><syl>ソ</syl></verse></note>
-                  <note xml:id="n52" pname="b" oct="4" dur="8"><verse n="1"><syl>ベ</syl></verse></note>
+                  <note xml:id="n50" pname="c" oct="4" dur="8"><verse n="1"><syl>ア</syl></verse></note>
+                  <note xml:id="n51" pname="e" oct="4" dur="8"><verse n="1"><syl>ソ</syl></verse></note>
+                  <note xml:id="n52" pname="g" oct="4" dur="8"><verse n="1"><syl>ベ</syl></verse></note>
                   <note xml:id="n53" pname="g" oct="4" dur="8"><verse n="1"><syl>ヨ</syl></verse></note>
                 </layer>
               </staff>
@@ -214,8 +214,8 @@
             <measure n="16" xml:id="m16" facs="#sys4">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n54" pname="g" oct="4" dur="8"><verse n="1"><syl>ト</syl></verse></note>
-                  <note xml:id="n55" pname="f" oct="4" dur="8"><verse n="1"><syl>マ</syl></verse></note>
+                  <note xml:id="n54" pname="e" oct="4" dur="8"><verse n="1"><syl>ト</syl></verse></note>
+                  <note xml:id="n55" pname="e" oct="4" dur="8"><verse n="1"><syl>マ</syl></verse></note>
                   <note xml:id="n56" pname="e" oct="4" dur="4"><verse n="1"><syl>レ</syl></verse></note>
                 </layer>
               </staff>
