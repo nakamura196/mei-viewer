@@ -261,6 +261,7 @@ window.addEventListener("load", async () => {
     (async () => {
       tk = t;
       tk.setOptions({ scale:60, adjustPageHeight:true, header:"none", footer:"none",
+                      spacingLinear:0.7, spacingNonLinear:0.45,
                       pageMarginTop:6, pageMarginBottom:6, pageMarginLeft:6, pageMarginRight:6 });
       const meiText = await loadData();
       renderNotation(meiText);

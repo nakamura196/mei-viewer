@@ -59,48 +59,47 @@
           </scoreDef>
           <section>
             <!-- 4/8拍子。各小節=8分音符4つぶん。底本の符頭・連桁・符尾から判読。
-                 m1/m2 の「テフ ー テフ」は、1つ目の「ちょう」を2音(8分2つ)のメリスマで
-                 延ばし(スラー)、2つ目の「ちょう」を4分にあてる。 -->
-            <!-- m1: 蝶々 (ソ8 ミ8 ミ4) -->
+                 歌詞は底本の楽譜歌詞行どおり、第1番＝カタカナの旧仮名で表記。
+                 「テフ ー テフ」= 1つ目の蝶(てふ=ちょう)を2音にわたり延ばし(長音符 ー)、
+                 2つ目の蝶を4分にあてる。スラーは付けず、底本どおり ー で延ばしを示す。 -->
+            <!-- m1: 蝶々 (ソ8 ミ8 ミ4) テフ ー テフ -->
             <measure n="1" xml:id="m1" facs="#sys1">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n1" pname="g" oct="4" dur="8"><verse n="1"><syl>ちょう</syl></verse></note>
-                  <note xml:id="n2" pname="e" oct="4" dur="8"/>
-                  <note xml:id="n3" pname="e" oct="4" dur="4"><verse n="1"><syl>ちょう</syl></verse></note>
+                  <note xml:id="n1" pname="g" oct="4" dur="8"><verse n="1"><syl>テフ</syl></verse></note>
+                  <note xml:id="n2" pname="e" oct="4" dur="8"><verse n="1"><syl>ー</syl></verse></note>
+                  <note xml:id="n3" pname="e" oct="4" dur="4"><verse n="1"><syl>テフ</syl></verse></note>
                 </layer>
               </staff>
-              <slur startid="#n1" endid="#n2"/>
             </measure>
-            <!-- m2: 蝶々 (ファ8 レ8 レ4) -->
+            <!-- m2: 蝶々 (ファ8 レ8 レ4) テフ ー テフ -->
             <measure n="2" xml:id="m2" facs="#sys1">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n4" pname="f" oct="4" dur="8"><verse n="1"><syl>ちょう</syl></verse></note>
-                  <note xml:id="n5" pname="d" oct="4" dur="8"/>
-                  <note xml:id="n6" pname="d" oct="4" dur="4"><verse n="1"><syl>ちょう</syl></verse></note>
+                  <note xml:id="n4" pname="f" oct="4" dur="8"><verse n="1"><syl>テフ</syl></verse></note>
+                  <note xml:id="n5" pname="d" oct="4" dur="8"><verse n="1"><syl>ー</syl></verse></note>
+                  <note xml:id="n6" pname="d" oct="4" dur="4"><verse n="1"><syl>テフ</syl></verse></note>
                 </layer>
               </staff>
-              <slur startid="#n4" endid="#n5"/>
             </measure>
-            <!-- m3: 菜の葉に (ド8 レ8 ミ8 ファ8) -->
+            <!-- m3: 菜の葉に (ド8 レ8 ミ8 ファ8) ナ ノ ハ ニ -->
             <measure n="3" xml:id="m3" facs="#sys1">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n7" pname="c" oct="4" dur="8"><verse n="1"><syl>な</syl></verse></note>
-                  <note xml:id="n8" pname="d" oct="4" dur="8"><verse n="1"><syl>の</syl></verse></note>
-                  <note xml:id="n9" pname="e" oct="4" dur="8"><verse n="1"><syl>は</syl></verse></note>
-                  <note xml:id="n10" pname="f" oct="4" dur="8"><verse n="1"><syl>に</syl></verse></note>
+                  <note xml:id="n7" pname="c" oct="4" dur="8"><verse n="1"><syl>ナ</syl></verse></note>
+                  <note xml:id="n8" pname="d" oct="4" dur="8"><verse n="1"><syl>ノ</syl></verse></note>
+                  <note xml:id="n9" pname="e" oct="4" dur="8"><verse n="1"><syl>ハ</syl></verse></note>
+                  <note xml:id="n10" pname="f" oct="4" dur="8"><verse n="1"><syl>ニ</syl></verse></note>
                 </layer>
               </staff>
             </measure>
-            <!-- m4: とまれ (ソ8 ソ8 ソ4) -->
+            <!-- m4: とまれ (ソ8 ソ8 ソ4) ト マ レ -->
             <measure n="4" xml:id="m4" facs="#sys1">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n11" pname="g" oct="4" dur="8"><verse n="1"><syl>と</syl></verse></note>
-                  <note xml:id="n12" pname="g" oct="4" dur="8"><verse n="1"><syl>ま</syl></verse></note>
-                  <note xml:id="n13" pname="g" oct="4" dur="4"><verse n="1"><syl>れ</syl></verse></note>
+                  <note xml:id="n11" pname="g" oct="4" dur="8"><verse n="1"><syl>ト</syl></verse></note>
+                  <note xml:id="n12" pname="g" oct="4" dur="8"><verse n="1"><syl>マ</syl></verse></note>
+                  <note xml:id="n13" pname="g" oct="4" dur="4"><verse n="1"><syl>レ</syl></verse></note>
                 </layer>
               </staff>
             </measure>
