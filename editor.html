@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>音高エディタ ― 蝶々｜音楽符号化デモ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap">
+<link rel="stylesheet" href="assets/react-ui.css">
+<script src="https://www.verovio.org/javascript/latest/verovio-toolkit-wasm.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/openseadragon@4.1.0/build/openseadragon/openseadragon.min.js" defer></script>
+<style>
+  body { font-family:var(--ds-font-sans); background:var(--ds-bg); color:var(--ds-fg); }
+  .vwrap { max-width:1760px; margin:0 auto; padding:18px 24px 8px; }
+  .ds-header__inner, .ds-footer__inner { max-width:1760px; }
+  .main2 { display:grid; gap:16px; grid-template-columns:1fr; }
+  @media (min-width:1024px){ .main2 { grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); align-items:start; } }
+  .panel { background:var(--ds-surface); border:1px solid var(--ds-border); border-radius:var(--ds-radius); padding:12px; min-width:0; }
+  .panel h2 { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ds-fg-muted); margin:0 0 8px; font-weight:700; }
+  #notation { background:#fff; border-radius:8px; padding:10px 14px; }
+  #notation svg { width:100%; height:auto; display:block; }
+  #notation g.note { cursor: pointer; }
+  #notation g.note.sel * { fill:var(--ds-blue)!important; stroke:var(--ds-blue)!important; }
+  #osd { width:100%; height:560px; background:#000; border-radius:8px; }
+  .toolbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:12px 0 4px; }
+  .pill { font-family:var(--ds-font-serif); font-size:16px; padding:4px 12px; border:1px solid var(--ds-border); border-radius:999px; background:#fff; min-width:120px; text-align:center; }
+  .hint { font-size:12px; color:var(--ds-fg-muted); line-height:1.7; }
+  .ai-note { font-size:12px; color:var(--ds-fg-muted); border-left:3px solid var(--ds-blue); padding:6px 10px; margin:0 0 12px; background:var(--ds-surface); }
+  kbd { background:#15171a; color:#fff; border-radius:4px; padding:1px 6px; font-size:12px; }
+  a { color:var(--ds-blue); }
+</style>
+</head>
+<body>
+<header class="ds-header">
+  <div class="ds-header__inner">
+    <a class="ds-header__brand" href="index.html">音楽符号化デモ</a>
+    <nav class="ds-header__nav">
+      <a class="ds-header__nav-link" href="viewer.html?id=choucho">ビューア</a>
+      <a class="ds-header__nav-link" href="https://mei-friend.mdw.ac.at/" target="_blank" rel="noopener">mei-friend</a>
+    </nav>
+  </div>
+</header>
+
+<main class="vwrap">
+  <h1 class="ds-h1">音高エディタ ―「蝶々」</h1>
+  <p class="ds-lead">原資料画像を見ながら、音符の高さを直して修正版 MEI を書き出せます。第2〜4段の暫定音高の校訂用です。</p>
+  <p class="ai-note">音符を<strong>クリックして選択</strong>し、<kbd>↑</kbd><kbd>↓</kbd>キー、画面の <strong>▲▼</strong> ボタン、または<strong>上下にドラッグ</strong>で1音ずつ高さを変えられます。右の原資料画像で照合してください。済んだら「MEIをダウンロード」で保存。<br>本格的な編集は <a href="https://mei-friend.mdw.ac.at/" target="_blank" rel="noopener">mei-friend</a> に <code>choucho.mei</code> を読み込むのが王道です。</p>
+
+  <div class="panel" style="margin-bottom:16px">
+    <h2>楽譜（クリックで選択 → 高さを編集）</h2>
+    <div id="notation">読み込み中…</div>
+    <div class="toolbar">
+      <button class="ds-btn ds-btn--sm" id="up">▲ 上げる</button>
+      <button class="ds-btn ds-btn--sm" id="down">▼ 下げる</button>
+      <span class="pill" id="sel">未選択</span>
+      <button class="ds-btn ds-btn--secondary ds-btn--sm" id="dl">MEIをダウンロード</button>
+      <button class="ds-btn ds-btn--secondary ds-btn--sm" id="copy">クリップボードにコピー</button>
+      <span class="hint" id="dirty"></span>
+    </div>
+  </div>
+
+  <div class="main2">
+    <div class="panel">
+      <h2>原資料（IIIF）― 選択中の段が枠表示</h2>
+      <div id="osd"></div>
+    </div>
+    <div class="panel">
+      <h2>使い方</h2>
+      <p class="hint">
+        1. 楽譜の音符をクリックして選択（青くなります）。<br>
+        2. 右の画像で、その段の同じ位置の音符を確認。<br>
+        3. ずれていれば <kbd>↑</kbd><kbd>↓</kbd>／▲▼／上下ドラッグで合わせる。<br>
+        4. 全部直したら「MEIをダウンロード」。<br><br>
+        ・1音 = 五線の半段（ドレミの隣）ずつ動きます。<br>
+        ・第1段（ちょうちょう…）は検証済みなので通常は触りません。<br>
+        ・選択中の段は画像に青枠で表示されます。
+      </p>
+    </div>
+  </div>
+</main>
+
+<script>
+const ID = new URLSearchParams(location.search).get("id") || "choucho";
+const BASE = "data/" + ID + "/";
+const SCALE = ["c","d","e","f","g","a","b"];
+let tk, viewer, meiXML, META, zones = {}, zoneByMeasure = {}, ov, selectedId = null, dirty = false, stepPx = 20;
+const notationEl = document.getElementById("notation");
+
+async function load() {
+  META = await (await fetch(BASE + "meta.json")).json();
+  const meiText = await (await fetch(BASE + META.mei)).text();
+  meiXML = new DOMParser().parseFromString(meiText, "application/xml");
+  meiXML.querySelectorAll("zone").forEach(z => zones[z.getAttribute("xml:id")] = {
+    ulx:+z.getAttribute("ulx"), uly:+z.getAttribute("uly"), lrx:+z.getAttribute("lrx"), lry:+z.getAttribute("lry") });
+  meiXML.querySelectorAll("measure").forEach(m =>
+    zoneByMeasure[m.getAttribute("xml:id")] = (m.getAttribute("facs")||"").replace("#",""));
+}
+
+function noteEl(id){ return [...meiXML.getElementsByTagName("note")].find(n => n.getAttribute("xml:id")===id); }
+
+function render(keep){
+  tk.loadData(new XMLSerializer().serializeToString(meiXML));
+  notationEl.innerHTML = tk.renderToSVG(1);
+  notationEl.querySelectorAll("g.note").forEach(g => {
+    g.addEventListener("mousedown", onDown);
+    g.addEventListener("click", () => selectNote(g.id));
+  });
+  measureStaff();
+  if (keep && selectedId) markSel();
+}
+
+function measureStaff(){
+  // staff-line spacing -> px per diatonic step (= half a staff space)
+  const svg = notationEl.querySelector("svg"); if(!svg) return;
+  const lines = [...svg.querySelectorAll("g.staff > path")].map(p => p.getBoundingClientRect().top).sort((a,b)=>a-b);
+  if (lines.length >= 2){ const sp = (lines[lines.length-1]-lines[0])/(lines.length-1); if (sp>2) stepPx = sp/2; }
+}
+
+function selectNote(id){
+  selectedId = id; markSel();
+  const n = noteEl(id); if(!n) return;
+  const m = n.closest("measure");
+  document.getElementById("sel").textContent =
+    n.getAttribute("pname").toUpperCase() + n.getAttribute("oct") + "（第" + (m?m.getAttribute("n"):"?") + "小節）";
+  frameZone(m ? zoneByMeasure[m.getAttribute("xml:id")] : null);
+}
+function markSel(){
+  notationEl.querySelectorAll("g.note.sel").forEach(e=>e.classList.remove("sel"));
+  const g = document.getElementById(selectedId); if(g) g.classList.add("sel");
+}
+
+function shift(id, delta){
+  const n = noteEl(id); if(!n || !delta) return;
+  let i = SCALE.indexOf(n.getAttribute("pname")), oct = +n.getAttribute("oct");
+  i += delta;
+  while (i > 6){ i -= 7; oct += 1; }
+  while (i < 0){ i += 7; oct -= 1; }
+  n.setAttribute("pname", SCALE[i]); n.setAttribute("oct", oct);
+  dirty = true; document.getElementById("dirty").textContent = "● 未保存の変更あり";
+  render(true); selectNote(id);
+}
+
+// drag
+let dragId = null, dragY = 0;
+function onDown(e){ const g = e.currentTarget; selectNote(g.id); dragId = g.id; dragY = e.clientY; e.preventDefault(); }
+document.addEventListener("mouseup", e => {
+  if(!dragId) return;
+  const steps = Math.round((dragY - e.clientY) / stepPx); // up = positive
+  if (steps) shift(dragId, steps);
+  dragId = null;
+});
+document.addEventListener("keydown", e => {
+  if(!selectedId) return;
+  if(e.key==="ArrowUp"){ shift(selectedId, +1); e.preventDefault(); }
+  if(e.key==="ArrowDown"){ shift(selectedId, -1); e.preventDefault(); }
+});
+
+function frameZone(zid){
+  if(!viewer || !zones[zid]) return;
+  const img = viewer.world.getItemAt(0); if(!img) return;
+  const z = zones[zid];
+  const rect = img.imageToViewportRectangle(z.ulx, z.uly, z.lrx-z.ulx, z.lry-z.uly);
+  if(!ov){ ov=document.createElement("div"); ov.style.cssText="border:3px solid var(--ds-blue);border-radius:4px;pointer-events:none;"; viewer.addOverlay({element:ov,location:rect}); }
+  else viewer.updateOverlay(ov, rect);
+  viewer.viewport.fitBoundsWithConstraints(rect.times(1.15));
+}
+
+function exportMEI(){ return new XMLSerializer().serializeToString(meiXML); }
+document.getElementById("dl").onclick = () => {
+  const blob = new Blob([exportMEI()], {type:"application/xml"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = (META.mei || "edited.mei"); a.click();
+};
+document.getElementById("copy").onclick = async () => {
+  await navigator.clipboard.writeText(exportMEI());
+  document.getElementById("dirty").textContent = "✓ クリップボードにコピーしました";
+};
+document.getElementById("up").onclick = () => selectedId && shift(selectedId, +1);
+document.getElementById("down").onclick = () => selectedId && shift(selectedId, -1);
+
+window.addEventListener("load", async () => {
+  await load();
+  viewer = OpenSeadragon({ id:"osd",
+    prefixUrl:"https://cdn.jsdelivr.net/npm/openseadragon@4.1.0/build/openseadragon/images/",
+    tileSources: META.iiif_info, showNavigator:true, navigatorPosition:"BOTTOM_RIGHT" });
+  (function ready(){
+    let t; try { if(typeof verovio==="undefined") throw 0; t = new verovio.toolkit(); }
+    catch(e){ return setTimeout(ready, 120); }
+    tk = t;
+    tk.setOptions({ scale:50, adjustPageHeight:true, header:"none", footer:"none",
+                    pageWidth:1500, spacingLinear:0.8, spacingNonLinear:0.5,
+                    pageMarginTop:6, pageMarginBottom:6, pageMarginLeft:6, pageMarginRight:6 });
+    render(false);
+  })();
+});
+</script>
+</body>
+</html>
