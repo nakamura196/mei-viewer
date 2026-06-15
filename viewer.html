@@ -23,8 +23,8 @@
   .panel { background:var(--ds-surface); border:1px solid var(--ds-border); border-radius:var(--ds-radius); padding:12px; min-width:0; }
   .panel h2 { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ds-fg-muted);
               margin:0 0 8px; font-weight:700; font-family:var(--ds-font-sans); }
-  #notation { background:#fff; border-radius:8px; padding:10px 6px; overflow-x:auto; text-align:center; }
-  #notation svg { height:170px; width:auto; max-width:none; display:inline-block; }
+  #notation { background:#fff; border-radius:8px; padding:10px 14px; }
+  #notation svg { width:100%; height:auto; display:block; }
   #notation g.note { cursor:pointer; }
   #notation g.note.sel * { fill:var(--ds-blue)!important; stroke:var(--ds-blue)!important; }
   #notation g.note.playing * { fill:#1f8a4c!important; stroke:#1f8a4c!important; }
@@ -260,8 +260,8 @@ window.addEventListener("load", async () => {
     catch(e){ return setTimeout(ready, 120); }
     (async () => {
       tk = t;
-      tk.setOptions({ scale:60, adjustPageHeight:true, header:"none", footer:"none",
-                      spacingLinear:0.7, spacingNonLinear:0.45,
+      tk.setOptions({ scale:50, adjustPageHeight:true, header:"none", footer:"none",
+                      pageWidth:1500, spacingLinear:0.8, spacingNonLinear:0.5,
                       pageMarginTop:6, pageMarginBottom:6, pageMarginLeft:6, pageMarginRight:6 });
       const meiText = await loadData();
       renderNotation(meiText);
