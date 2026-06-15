@@ -11,10 +11,12 @@
 <script src="https://cdn.jsdelivr.net/npm/openseadragon@4.1.0/build/openseadragon/openseadragon.min.js" defer></script>
 <style>
   body { font-family:var(--ds-font-sans); background:var(--ds-bg); color:var(--ds-fg); }
-  .vwrap { max-width:1760px; margin:0 auto; padding:18px 24px 8px; }
-  .ds-header__inner, .ds-footer__inner { max-width:1760px; }
+  .vwrap { max-width:none; margin:0; padding:18px 24px 8px; }
+  .ds-header__inner, .ds-footer__inner { max-width:none; }
   .main2 { display:grid; gap:16px; grid-template-columns:1fr; }
-  @media (min-width:1024px){ .main2 { grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); align-items:start; } }
+  @media (min-width:1024px){ .main2 { grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); align-items:start; } }
+  .toolbar-panel { margin-bottom:16px; position:sticky; top:6px; z-index:5; }
+  .toolbar { margin:0; }
   .panel { background:var(--ds-surface); border:1px solid var(--ds-border); border-radius:var(--ds-radius); padding:12px; min-width:0; }
   .panel h2 { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ds-fg-muted); margin:0 0 8px; font-weight:700; }
   #notation { background:#fff; border-radius:8px; padding:10px 14px; }
@@ -46,9 +48,7 @@
   <p class="ds-lead">原資料画像を見ながら、音符の高さを直して修正版 MEI を書き出せます。第2〜4段の暫定音高の校訂用です。</p>
   <p class="ai-note">音符を<strong>クリックして選択</strong>し、<kbd>↑</kbd><kbd>↓</kbd>キー、画面の <strong>▲▼</strong> ボタン、または<strong>上下にドラッグ</strong>で1音ずつ高さを変えられます。右の原資料画像で照合してください。済んだら「MEIをダウンロード」で保存。<br>本格的な編集は <a href="https://mei-friend.mdw.ac.at/" target="_blank" rel="noopener">mei-friend</a> に <code>choucho.mei</code> を読み込むのが王道です。</p>
 
-  <div class="panel" style="margin-bottom:16px">
-    <h2>楽譜（クリックで選択 → 高さを編集）</h2>
-    <div id="notation">読み込み中…</div>
+  <div class="panel toolbar-panel">
     <div class="toolbar">
       <button class="ds-btn ds-btn--sm" id="up">▲ 上げる</button>
       <button class="ds-btn ds-btn--sm" id="down">▼ 下げる</button>
@@ -61,20 +61,12 @@
 
   <div class="main2">
     <div class="panel">
-      <h2>原資料（IIIF）― 選択中の段が枠表示</h2>
-      <div id="osd"></div>
+      <h2>楽譜（クリックで選択 → <kbd>↑</kbd><kbd>↓</kbd>／▲▼／ドラッグで編集）</h2>
+      <div id="notation">読み込み中…</div>
     </div>
     <div class="panel">
-      <h2>使い方</h2>
-      <p class="hint">
-        1. 楽譜の音符をクリックして選択（青くなります）。<br>
-        2. 右の画像で、その段の同じ位置の音符を確認。<br>
-        3. ずれていれば <kbd>↑</kbd><kbd>↓</kbd>／▲▼／上下ドラッグで合わせる。<br>
-        4. 全部直したら「MEIをダウンロード」。<br><br>
-        ・1音 = 五線の半段（ドレミの隣）ずつ動きます。<br>
-        ・第1段（ちょうちょう…）は検証済みなので通常は触りません。<br>
-        ・選択中の段は画像に青枠で表示されます。
-      </p>
+      <h2>原資料（IIIF）― 選択中の段が青枠表示</h2>
+      <div id="osd"></div>
     </div>
   </div>
 </main>
