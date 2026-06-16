@@ -238,12 +238,23 @@ function frameZone(zid, kind){
 }
 
 // playback highlight
-let raf;
+let raf, playSys = null;
 function tick(){
   const t = document.getElementById("player").currentTime*1000;
   const res = tk.getElementsAtTime(t);
   document.querySelectorAll("#notation g.note.playing").forEach(e=>e.classList.remove("playing"));
-  (res.notes||[]).forEach(nid => { const g=document.getElementById(nid); if(g) g.classList.add("playing"); });
+  const notes = res.notes || [];
+  notes.forEach(nid => { const g=document.getElementById(nid); if(g) g.classList.add("playing"); });
+  // follow the currently-sounding note's system with the frames + lyric row
+  if (notes.length){
+    const d = noteData(notes[0]);
+    if (d && d.sys && d.sys !== playSys){
+      playSys = d.sys;
+      drawOverlay(d.sys, "music");
+      const lyr = lyrics.verses[0].lines.find(l => l.sys === d.sys);
+      if (lyr){ drawOverlay(lyr.id, "lyric"); highlightLyricRow(lyr.id); }
+    }
+  }
   raf = requestAnimationFrame(tick);
 }
 
@@ -280,7 +291,7 @@ window.addEventListener("load", async () => {
   const player = document.getElementById("player");
   document.getElementById("play").onclick = () => player.start();
   document.getElementById("stop").onclick = () => player.stop();
-  player.addEventListener("start", () => { cancelAnimationFrame(raf); tick(); });
+  player.addEventListener("start", () => { cancelAnimationFrame(raf); playSys = null; tick(); });
   player.addEventListener("stop", () => { cancelAnimationFrame(raf);
     document.querySelectorAll("#notation g.note.playing").forEach(e=>e.classList.remove("playing")); });
 });
