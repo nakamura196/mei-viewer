@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="assets/react-ui.css">
 <script src="https://www.verovio.org/javascript/latest/verovio-toolkit-wasm.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/openseadragon@4.1.0/build/openseadragon/openseadragon.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.77,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.5.0" defer></script>
 <style>
   body { font-family:var(--ds-font-sans); background:var(--ds-bg); color:var(--ds-fg); }
   .vwrap { max-width:none; margin:0; padding:18px 24px 8px; }
@@ -23,6 +24,8 @@
   #notation svg { width:100%; height:auto; display:block; }
   #notation g.note { cursor: pointer; }
   #notation g.note.sel * { fill:var(--ds-blue)!important; stroke:var(--ds-blue)!important; }
+  #notation g.note.playing * { fill:#1f8a4c!important; stroke:#1f8a4c!important; }
+  midi-player { width:100%; margin-top:8px; --md-sys-color-primary:var(--ds-blue); }
   #osd { width:100%; height:560px; background:#000; border-radius:8px; }
   .toolbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:12px 0 4px; }
   .pill { font-family:var(--ds-font-serif); font-size:16px; padding:4px 12px; border:1px solid var(--ds-border); border-radius:999px; background:#fff; min-width:120px; text-align:center; }
@@ -53,6 +56,8 @@
       <button class="ds-btn ds-btn--sm" id="up">▲ 上げる</button>
       <button class="ds-btn ds-btn--sm" id="down">▼ 下げる</button>
       <span class="pill" id="sel">未選択</span>
+      <button class="ds-btn ds-btn--sm" id="play">▶ 再生</button>
+      <button class="ds-btn ds-btn--secondary ds-btn--sm" id="stop">■ 停止</button>
       <button class="ds-btn ds-btn--secondary ds-btn--sm" id="dl">MEIをダウンロード</button>
       <button class="ds-btn ds-btn--secondary ds-btn--sm" id="copy">クリップボードにコピー</button>
       <span class="hint" id="dirty"></span>
@@ -63,6 +68,7 @@
     <div class="panel">
       <h2>楽譜（<kbd>←</kbd><kbd>→</kbd>音符移動／<kbd>↑</kbd><kbd>↓</kbd>音高／▲▼・ドラッグでも編集）</h2>
       <div id="notation">読み込み中…</div>
+      <midi-player id="player" sound-font></midi-player>
     </div>
     <div class="panel">
       <h2>原資料（IIIF）― 選択中の段が青枠表示</h2>
@@ -99,6 +105,18 @@ function render(keep){
   });
   measureStaff();
   if (keep && selectedId) markSel();
+  // refresh MIDI so playback reflects the current (edited) pitches
+  const pl = document.getElementById("player"); if (pl) pl.src = "data:audio/midi;base64," + tk.renderToMIDI();
+}
+
+// playback (to check the edited melody by ear) with green highlight of the sounding note
+let raf;
+function tick(){
+  const pl = document.getElementById("player");
+  const res = tk.getElementsAtTime(pl.currentTime * 1000);
+  notationEl.querySelectorAll("g.note.playing").forEach(e=>e.classList.remove("playing"));
+  (res.notes||[]).forEach(id => { const g=document.getElementById(id); if(g) g.classList.add("playing"); });
+  raf = requestAnimationFrame(tick);
 }
 
 function measureStaff(){
@@ -179,6 +197,14 @@ document.getElementById("copy").onclick = async () => {
 };
 document.getElementById("up").onclick = () => selectedId && shift(selectedId, +1);
 document.getElementById("down").onclick = () => selectedId && shift(selectedId, -1);
+(function(){
+  const pl = document.getElementById("player");
+  document.getElementById("play").onclick = () => pl.start();
+  document.getElementById("stop").onclick = () => pl.stop();
+  pl.addEventListener("start", () => { cancelAnimationFrame(raf); tick(); });
+  pl.addEventListener("stop", () => { cancelAnimationFrame(raf);
+    notationEl.querySelectorAll("g.note.playing").forEach(e=>e.classList.remove("playing")); });
+})();
 
 window.addEventListener("load", async () => {
   await load();
