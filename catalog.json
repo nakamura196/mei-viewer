@@ -10,6 +10,15 @@
       "thumb": "https://dl.ndl.go.jp/api/iiif/992051/R0000017/2300,360,2040,460/600,/0/default.jpg",
       "tags": ["MEI 5.1", "IIIF", "唱歌", "1881"],
       "summary": "『小学唱歌集 初編』文部省音楽取調掛 編（1881–1884）。国立国会図書館蔵（PDM）。音符⇄原資料⇄縦書き歌詞を相互リンクし、旋律を再生できます。"
+    },
+    {
+      "id": "heidenroslein",
+      "title": "野ばら（Heidenröslein, D.257）",
+      "collection": "Schubert: Lieder",
+      "date": "1815",
+      "thumb": "data/heidenroslein/thumb.png",
+      "tags": ["MEI", "MusicXML変換", "Lied", "CC0"],
+      "summary": "シューベルト作曲・ゲーテ作詞の歌曲。OpenScore Lieder（CC0）の MusicXML を Verovio で MEI に機械変換した born-digital 資料。音符をクリックすると音高・歌詞などの構造化データを表示し、旋律を再生できます（原資料IIIFリンクは無し）。"
     }
   ]
 }

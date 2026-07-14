@@ -128,6 +128,10 @@ let tk, viewer, meiXML, lyrics, META, zones = {}, zoneByMeasure = {}, ovMusic, o
 // data-driven: ?id=<slug> selects which work to load from data/<slug>/
 const ID = new URLSearchParams(location.search).get("id") || "choucho";
 const BASE = "data/" + ID + "/";
+// Two modes, chosen by which files meta.json declares:
+//   facsimile mode  (choucho): IIIF 原資料 + 座標リンク歌詞 (iiif_info + lyrics)
+//   score-only mode (Lied 等): 楽譜のみ。歌詞は MEI 内蔵、原資料画像なし
+let HAS_FACS = true;
 
 async function loadData() {
   const meiText = await (await fetch(BASE + META.mei)).text();
@@ -138,11 +142,15 @@ async function loadData() {
   });
   meiXML.querySelectorAll("measure").forEach(m =>
     zoneByMeasure[m.getAttribute("xml:id")] = (m.getAttribute("facs")||"").replace("#",""));
-  lyrics = await (await fetch(BASE + META.lyrics)).json();
-  // register lyric-line bboxes as zones too (id = line id)
-  lyrics.verses.forEach(v => v.lines.forEach(l => {
-    const [x,y,w,h] = l.bbox; zones[l.id] = {ulx:x, uly:y, lrx:x+w, lry:y+h};
-  }));
+  if (HAS_FACS) {
+    lyrics = await (await fetch(BASE + META.lyrics)).json();
+    // register lyric-line bboxes as zones too (id = line id)
+    lyrics.verses.forEach(v => v.lines.forEach(l => {
+      const [x,y,w,h] = l.bbox; zones[l.id] = {ulx:x, uly:y, lrx:x+w, lry:y+h};
+    }));
+  } else {
+    lyrics = { verses: [] };   // score-only: 歌詞は MEI の <syl> が楽譜上に描かれる
+  }
   return meiText;
 }
 
@@ -192,10 +200,12 @@ function selectNote(id){
     <tr><td class="k">小節 measure</td><td>第 ${d.measure} 小節</td></tr>
     <tr><td class="k">原資料 facs</td><td>${d.sys||"—"}（段）</td></tr>
   </table>`;
-  // matching verse-1 lyric line for this system
-  const lyr = lyrics.verses[0].lines.find(l => l.sys === d.sys);
-  frameZone(d.sys, "music");
-  if (lyr) { drawOverlay(lyr.id, "lyric"); highlightLyricRow(lyr.id); }
+  // matching verse-1 lyric line for this system (facsimile mode only)
+  if (HAS_FACS && lyrics.verses[0]) {
+    const lyr = lyrics.verses[0].lines.find(l => l.sys === d.sys);
+    frameZone(d.sys, "music");
+    if (lyr) { drawOverlay(lyr.id, "lyric"); highlightLyricRow(lyr.id); }
+  }
 }
 
 function selectLyric(l){
@@ -258,14 +268,48 @@ function tick(){
   raf = requestAnimationFrame(tick);
 }
 
+// score-only mode: hide facsimile/honkoku panels and rewrite the choucho-specific
+// page chrome from meta.json, so a born-digital score (no IIIF) reads correctly.
+function applyScoreOnlyChrome(){
+  const osdPanel = document.getElementById("osd") && document.getElementById("osd").closest(".panel");
+  const honkokuPanel = document.getElementById("honkoku") && document.getElementById("honkoku").closest(".panel");
+  if (osdPanel) osdPanel.style.display = "none";
+  if (honkokuPanel) honkokuPanel.style.display = "none";
+  const main2 = document.querySelector(".main2");
+  if (main2) main2.style.gridTemplateColumns = "1fr";   // single column (no facsimile)
+  const h1 = document.querySelector("h1.ds-h1");
+  if (h1) h1.textContent = "「" + META.title + "」 ― MEI ビューア";
+  const lead = document.querySelector("p.ds-lead");
+  if (lead) lead.textContent = (META.creator ? META.creator + "。" : "") +
+    (META.collection ? META.collection + "。" : "") +
+    "MusicXML を Verovio で MEI に変換し、構造化楽譜として描画します。";
+  const note = document.querySelector("p.ai-note");
+  if (note) note.textContent = "楽譜の音符をクリックすると、MEI が保持する音高・音価・歌詞・小節が表示されます。「▶ 再生」で旋律を音にできます。原資料画像リンクの無い born-digital 資料です。";
+  const ctrlHint = document.querySelector(".controls .hint");
+  if (ctrlHint) ctrlHint.textContent = "音符をクリック → 音高・音価・歌詞などの構造化データを表示。";
+  const ndlLink = document.querySelector('.ds-footer a[href*="ndljp"]');
+  if (ndlLink){
+    const li = ndlLink.closest("li");
+    if (META.source_url){ ndlLink.href = META.source_url; ndlLink.textContent = "出典: " + (META.collection || "OpenScore") + "（" + (META.rights || "") + "）"; }
+    else if (li){ li.remove(); }
+  }
+  const copy = document.querySelector(".ds-footer__copyright");
+  if (copy) copy.textContent = "出典: " + (META.collection || "") + (META.creator ? "（" + META.creator + "）" : "") + " ／ エンコード: " + (META.rights || "CC0");
+}
+
 window.addEventListener("load", async () => {
   META = await (await fetch(BASE + "meta.json")).json();
+  HAS_FACS = !!(META.iiif_info && META.lyrics);
   // reflect the work's title in the page
-  document.title = META.title + " ― MEI×IIIF ビューア｜音楽符号化デモ";
-  viewer = OpenSeadragon({ id:"osd",
-    prefixUrl:"https://cdn.jsdelivr.net/npm/openseadragon@4.1.0/build/openseadragon/images/",
-    tileSources: META.iiif_info,
-    showNavigator:true, navigatorPosition:"BOTTOM_RIGHT" });
+  document.title = META.title + (HAS_FACS ? " ― MEI×IIIF ビューア" : " ― MEI ビューア") + "｜音楽符号化デモ";
+  if (HAS_FACS) {
+    viewer = OpenSeadragon({ id:"osd",
+      prefixUrl:"https://cdn.jsdelivr.net/npm/openseadragon@4.1.0/build/openseadragon/images/",
+      tileSources: META.iiif_info,
+      showNavigator:true, navigatorPosition:"BOTTOM_RIGHT" });
+  } else {
+    applyScoreOnlyChrome();
+  }
 
   (function ready(){
     let t; try { if (typeof verovio==="undefined") throw 0; t = new verovio.toolkit(); }
@@ -277,14 +321,16 @@ window.addEventListener("load", async () => {
                       pageMarginTop:6, pageMarginBottom:6, pageMarginLeft:6, pageMarginRight:6 });
       const meiText = await loadData();
       renderNotation(meiText);
-      buildHonkoku();
-      // show the whole spread first with sys1 marked. Guard against the race where
-      // OSD's "open" already fired before this handler is attached.
-      const showInitial = () => { drawOverlay("sys1","music"); viewer.viewport.goHome(true); };
-      if (viewer.world.getItemCount() > 0) showInitial();
-      else viewer.addHandler("open", showInitial);
-      // re-fit once the honkoku panel has been laid out
-      setTimeout(() => { if (viewer.world.getItemCount() > 0) viewer.viewport.goHome(true); }, 500);
+      if (HAS_FACS) {
+        buildHonkoku();
+        // show the whole spread first with sys1 marked. Guard against the race where
+        // OSD's "open" already fired before this handler is attached.
+        const showInitial = () => { drawOverlay("sys1","music"); viewer.viewport.goHome(true); };
+        if (viewer.world.getItemCount() > 0) showInitial();
+        else viewer.addHandler("open", showInitial);
+        // re-fit once the honkoku panel has been laid out
+        setTimeout(() => { if (viewer.world.getItemCount() > 0) viewer.viewport.goHome(true); }, 500);
+      }
     })();
   })();
 

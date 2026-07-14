@@ -1,0 +1,14 @@
+{
+  "id": "heidenroslein",
+  "title": "野ばら（Heidenröslein, D.257）",
+  "title_en": "Heidenröslein, D.257",
+  "collection": "Schubert: Lieder",
+  "creator": "Franz Schubert（作曲）／Johann Wolfgang von Goethe（作詞）",
+  "date": "1815",
+  "language": "de",
+  "source_url": "https://github.com/OpenScore/Lieder/tree/main/scores/Schubert,_Franz/Op.3/3_Heidenr%C3%B6slein,_D.257",
+  "rights": "CC0",
+  "mei": "heidenroslein.mei",
+  "encoded_scope": "OpenScore Lieder（CC0）の MusicXML を Verovio で MEI へ機械変換したもの。歌詞は MEI に内蔵（原資料IIIF・座標リンクは無し／born-digital）。",
+  "tags": ["MEI", "MusicXML変換", "Lied", "CC0"]
+}

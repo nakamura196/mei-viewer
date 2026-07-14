@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  
+
+  <teiHeader>
+    <fileDesc>
+      
+
+      <titleStmt>
+        <title>野ばら（Heidenröslein, D.257）</title>
+      </titleStmt>
+      
+
+      <publicationStmt>
+        <availability status="free">
+          <licence target="https://creativecommons.org/publicdomain/zero/1.0/">CC0</licence>
+        </availability>
+      </publicationStmt>
+      
+
+      <sourceDesc>
+        <bibl>
+          <title>Schubert: Lieder</title>
+          <respStmt>
+            <resp>—</resp>
+            <name>Franz Schubert（作曲）／Johann Wolfgang von Goethe（作詞）</name>
+          </respStmt>
+          <date>1815</date>
+          <ref target="https://github.com/OpenScore/Lieder/tree/main/scores/Schubert,_Franz/Op.3/3_Heidenr%C3%B6slein,_D.257">source</ref>
+        </bibl>
+      </sourceDesc>
+      
+
+    </fileDesc>
+  </teiHeader>
+  
+
+  <text>
+    <body>
+      
+
+      <p>この資料の楽譜は MEI (application/mei+xml) を参照。歌詞は MEI に内蔵されています。</p>
+      
+
+    </body>
+  </text>
+  
+
+</TEI>

@@ -1,0 +1,13 @@
+{
+  "@context": "https://distributed-text-services.github.io/specifications/context/1-alpha1.json",
+  "dtsVersion": "1-alpha",
+  "dts:version": "1-alpha",
+  "@id": "https://nakamura196.github.io/mei-viewer/dts/navigation/heidenroslein.json",
+  "@type": "Navigation",
+  "resource": {
+    "@id": "urn:mei-viewer:schubert-lieder:heidenroslein",
+    "@type": "Resource",
+    "document": "https://nakamura196.github.io/mei-viewer/dts/document/heidenroslein.tei.xml"
+  },
+  "member": []
+}

@@ -2,7 +2,7 @@
   "@context": "https://distributed-text-services.github.io/specifications/context/1-alpha1.json",
   "dtsVersion": "1-alpha",
   "dts:version": "1-alpha",
-  "@id": "urn:shoka:shohen",
+  "@id": "urn:mei-viewer:shohen",
   "@type": "Collection",
   "title": "小学唱歌集 初編",
   "totalParents": 1,
@@ -10,7 +10,7 @@
   "collection": "https://nakamura196.github.io/mei-viewer/dts/collection/shohen.json",
   "member": [
     {
-      "@id": "urn:shoka:shohen:choucho",
+      "@id": "urn:mei-viewer:shohen:choucho",
       "@type": "Resource",
       "title": "蝶々（第十七）",
       "totalParents": 1,
@@ -29,14 +29,14 @@
         "creator": [
           "文部省音楽取調掛 編"
         ],
+        "language": [
+          "ja"
+        ],
         "source": [
           "https://dl.ndl.go.jp/info:ndljp/pid/992051"
         ],
         "identifier": [
           "info:ndljp/pid/992051"
-        ],
-        "language": [
-          "ja"
         ],
         "rights": [
           "https://creativecommons.org/publicdomain/mark/1.0/"

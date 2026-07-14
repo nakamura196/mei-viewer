@@ -2,20 +2,28 @@
   "@context": "https://distributed-text-services.github.io/specifications/context/1-alpha1.json",
   "dtsVersion": "1-alpha",
   "dts:version": "1-alpha",
-  "@id": "urn:shoka",
+  "@id": "urn:mei-viewer",
   "@type": "Collection",
-  "title": "小学唱歌集",
+  "title": "音楽符号化デモ",
   "totalParents": 0,
-  "totalChildren": 1,
+  "totalChildren": 2,
   "collection": "https://nakamura196.github.io/mei-viewer/dts/collection/root.json",
   "member": [
     {
-      "@id": "urn:shoka:shohen",
+      "@id": "urn:mei-viewer:shohen",
       "@type": "Collection",
       "title": "小学唱歌集 初編",
       "totalParents": 1,
       "totalChildren": 1,
       "collection": "https://nakamura196.github.io/mei-viewer/dts/collection/shohen.json"
+    },
+    {
+      "@id": "urn:mei-viewer:schubert-lieder",
+      "@type": "Collection",
+      "title": "Schubert: Lieder",
+      "totalParents": 1,
+      "totalChildren": 1,
+      "collection": "https://nakamura196.github.io/mei-viewer/dts/collection/schubert-lieder.json"
     }
   ]
 }

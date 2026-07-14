@@ -5,7 +5,7 @@
   "@id": "https://nakamura196.github.io/mei-viewer/dts/navigation/choucho.json",
   "@type": "Navigation",
   "resource": {
-    "@id": "urn:shoka:shohen:choucho",
+    "@id": "urn:mei-viewer:shohen:choucho",
     "@type": "Resource",
     "document": "https://nakamura196.github.io/mei-viewer/dts/document/choucho.tei.xml"
   },

@@ -1,0 +1,65 @@
+{
+  "@context": "https://distributed-text-services.github.io/specifications/context/1-alpha1.json",
+  "dtsVersion": "1-alpha",
+  "dts:version": "1-alpha",
+  "@id": "urn:mei-viewer:schubert-lieder",
+  "@type": "Collection",
+  "title": "Schubert: Lieder",
+  "totalParents": 1,
+  "totalChildren": 1,
+  "collection": "https://nakamura196.github.io/mei-viewer/dts/collection/schubert-lieder.json",
+  "member": [
+    {
+      "@id": "urn:mei-viewer:schubert-lieder:heidenroslein",
+      "@type": "Resource",
+      "title": "野ばら（Heidenröslein, D.257）",
+      "totalParents": 1,
+      "totalChildren": 0,
+      "dublinCore": {
+        "title": [
+          {
+            "lang": "ja",
+            "value": "野ばら（Heidenröslein, D.257）"
+          },
+          {
+            "lang": "en",
+            "value": "Heidenröslein, D.257"
+          }
+        ],
+        "creator": [
+          "Franz Schubert（作曲）／Johann Wolfgang von Goethe（作詞）"
+        ],
+        "language": [
+          "de"
+        ],
+        "source": [
+          "https://github.com/OpenScore/Lieder/tree/main/scores/Schubert,_Franz/Op.3/3_Heidenr%C3%B6slein,_D.257"
+        ],
+        "license": [
+          "https://creativecommons.org/publicdomain/zero/1.0/"
+        ]
+      },
+      "collection": "https://nakamura196.github.io/mei-viewer/dts/collection/schubert-lieder.json",
+      "navigation": "https://nakamura196.github.io/mei-viewer/dts/navigation/heidenroslein.json",
+      "document": "https://nakamura196.github.io/mei-viewer/dts/document/heidenroslein.tei.xml",
+      "mediaTypes": [
+        "application/tei+xml",
+        "application/mei+xml"
+      ],
+      "download": {
+        "application/tei+xml": "https://nakamura196.github.io/mei-viewer/dts/document/heidenroslein.tei.xml",
+        "application/mei+xml": "https://nakamura196.github.io/mei-viewer/dts/document/heidenroslein.mei"
+      },
+      "citationTrees": [
+        {
+          "@type": "CitationTree",
+          "citeStructure": [
+            {
+              "citeType": "document"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
