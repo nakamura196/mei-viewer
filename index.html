@@ -37,7 +37,7 @@
   <div class="ds-header__inner">
     <a class="ds-header__brand" href="index.html">音楽符号化デモ</a>
     <nav class="ds-header__nav">
-      <a class="ds-header__nav-link" href="viewer.html">ビューア</a>
+      <a class="ds-header__nav-link" href="https://ab.ldas.jp/na-kamura-1263/mei-scores">ビューア</a>
       <a class="ds-header__nav-link" href="editor.html?id=choucho">音高エディタ</a>
       <a class="ds-header__nav-link" href="https://music-encoding.org" target="_blank" rel="noopener">MEIとは</a>
       <a class="ds-header__nav-link" href="https://github.com/nakamura196" target="_blank" rel="noopener">GitHub</a>
@@ -83,7 +83,7 @@
       <div class="ds-footer__col">
         <h2 class="ds-footer__heading">関連リンク</h2>
         <ul class="ds-footer__list">
-          <li><a class="ds-footer__link" href="viewer.html">蝶々ビューア</a></li>
+          <li><a class="ds-footer__link" href="https://ab.ldas.jp/na-kamura-1263/mei-scores/resource/choucho">蝶々ビューア</a></li>
           <li><a class="ds-footer__link" href="dts/index.json">DTS API（EntryPoint JSON）</a></li>
           <li><a class="ds-footer__link" href="https://nakamura196.github.io/dts-viewer/ja/?base=https://nakamura196.github.io/mei-viewer/dts/&amp;url=https://nakamura196.github.io/mei-viewer/dts/collection/root.json" target="_blank" rel="noopener">dts-viewer で開く</a></li>
           <li><a class="ds-footer__link" href="https://music-encoding.org" target="_blank" rel="noopener">Music Encoding Initiative</a></li>
@@ -104,7 +104,7 @@ fetch("catalog.json").then(r => r.json()).then(cat => {
   cat.items.forEach(it => {
     const a = document.createElement("a");
     a.className = "ds-card item";
-    a.href = "viewer.html?id=" + encodeURIComponent(it.id);
+    a.href = "https://ab.ldas.jp/na-kamura-1263/mei-scores/resource/" + encodeURIComponent(it.id);
     a.style.cssText = "text-decoration:none;color:inherit";
     a.innerHTML = `
       <img src="${esc(it.thumb)}" alt="${esc(it.title)}の楽譜（部分）" loading="lazy">

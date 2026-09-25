@@ -5,7 +5,7 @@
 最初の題材は明治期『小学唱歌集 初編』第十七「蝶々」（国立国会図書館蔵, PDM）。
 
 🔗 **公開サイト**: https://nakamura196.github.io/mei-viewer/
-🎼 **ビューア**: https://nakamura196.github.io/mei-viewer/viewer.html?id=choucho
+🎼 **ビューア**: https://ab.ldas.jp/na-kamura-1263/mei-scores/resource/choucho （archivebase へ移転。旧 viewer.html はここへ転送）
 
 ## できること
 
@@ -19,7 +19,7 @@
 
 ```
 index.html              カタログ（catalog.json を読んでカード生成）
-viewer.html             ビューア（?id=<slug> でデータ切替）
+viewer.html             archivebase への転送ページ（?id=<slug> で移転先を切替）
 catalog.json            目録（曲一覧）
 assets/react-ui.css     デザインシステム（@nakamura196/react-ui, UTokyo VI, MIT）をベンダリング
 data/<id>/
