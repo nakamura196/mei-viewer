@@ -6,6 +6,7 @@
 
 🔗 **公開サイト**: https://nakamura196.github.io/mei-viewer/
 🎼 **ビューア**: https://ab.ldas.jp/na-kamura-1263/mei-scores/resource/choucho （archivebase へ移転。旧 viewer.html はここへ転送）
+✏️ **音高エディタ**: https://mei.ldas.jp/ （自分の MEI も開ける単独ツール、[nakamura196/mei-editor](https://github.com/nakamura196/mei-editor)。旧 editor.html はここへ転送）
 
 ## できること
 
@@ -20,6 +21,7 @@
 ```
 index.html              カタログ（catalog.json を読んでカード生成）
 viewer.html             archivebase への転送ページ（?id=<slug> で移転先を切替）
+editor.html             mei.ldas.jp への転送ページ（?id=<slug> の曲を開いた状態へ）
 catalog.json            目録（曲一覧）
 assets/react-ui.css     デザインシステム（@nakamura196/react-ui, UTokyo VI, MIT）をベンダリング
 data/<id>/
